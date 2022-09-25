@@ -1,15 +1,20 @@
 from flask import render_template,redirect,make_response,url_for,flash
 from werkzeug.security import generate_password_hash,check_password_hash
 from werkzeug.utils import secure_filename
-from config import migrate,app,photos
+from config import migrate,app,photos,login_manger
 from forms import LoginForm,SignUpForm
 from uuid import uuid4
+from os import makedirs
 from models import *
 
 
+@login_manger.user_loader
+def load_user(user_id):
+    return User.query.filter(User.id == user_id).first()
+
 @app.route("/main")
 def main():
-    res = make_response(url_for("main.html"))
+    res = make_response(render_template("main.html"))
     return res
 
 @app.route("/login/",methods = ['GET','POST'])
@@ -25,22 +30,25 @@ def logIn():
     return res
 
 
-@app.route("/sign-up/")
+@app.route("/sign-up/",methods = ['GET','POST'])
 def signUp():
     signForm = SignUpForm()
     if(signForm.validate_on_submit()):
         if(signForm.password.data == signForm.repassword.data):
-            file = photos.save(storage = signForm.profile.data)
-            fn = uuid4() + secure_filename(file.filename)
+            newid = str(uuid4())
+            makedirs("uploads/" + newid)
+            file = photos.save(storage = signForm.profile.data,folder = newid)
+            print(file)
             new_user = User(
                 username = signForm.username.data,
+                email = signForm.email.data,
                 password = generate_password_hash(signForm.password.data),
                 gender = signForm.gender.data,
                 birthdate = signForm.birthdate.data,
-                profile = signForm.profile.data
+                profile = file
             )
             new_user.save()
-            return redirect(url_for("/login"))
+            return redirect(url_for("logIn"))
         else:
             flash("Passwords don't match!")
     res = make_response(render_template("sign-up.html",form = signForm))

@@ -1,13 +1,13 @@
-from config import db
+from config import db,UserMixin
 
 
-class User(db.Model):
+class User(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(50),nullable = False)
     gender = db.Column(db.String(1),nullable = False)
     email = db.Column(db.String(250),nullable = False,unique = True)
     password = db.Column(db.String(250),nullable = False)
-    birtdate = db.Column(db.Date)
+    birthdate = db.Column(db.Date)
     profile = db.Column(db.String(100))
 
 
