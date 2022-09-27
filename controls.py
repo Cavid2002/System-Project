@@ -1,5 +1,6 @@
 from flask import render_template,redirect,make_response,url_for,flash
 from werkzeug.security import generate_password_hash,check_password_hash
+from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
 from app import migrate,app,photos,login_manger
 from forms import LoginForm,SignUpForm
@@ -10,11 +11,13 @@ from models import *
 
 @login_manger.user_loader
 def load_user(user_id):
-    return User.query.filter(User.id == user_id).first()
+    return User.query.filter_by(id = user_id).first()
 
+
+@login_required
 @app.route("/main")
 def main():
-    res = make_response(render_template("main.html"))
+    res = make_response(render_template("main.html",user_info = current_user))
     return res
 
 @app.route("/login/",methods = ['GET','POST'])
@@ -23,6 +26,7 @@ def logIn():
     if(logform.validate_on_submit()):
         user = User.query.filter(User.email == logform.email.data).first()
         if(user and check_password_hash(user.password,logform.password.data)):
+            login_user(user)
             return redirect(url_for("main"))
         else:
             flash("Invalid Email or Password!")
@@ -53,6 +57,13 @@ def signUp():
             flash("Passwords don't match!")
     res = make_response(render_template("sign-up.html",form = signForm))
     return res
+
+
+@app.route("/logout")
+@login_required
+def logOut():
+    logout_user()
+    return redirect(url_for('logIn'))
 
 
 @app.errorhandler(404)

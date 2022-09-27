@@ -7,7 +7,7 @@ class User(db.Model,UserMixin):
     gender = db.Column(db.String(1),nullable = False)
     email = db.Column(db.String(250),nullable = False,unique = True)
     password = db.Column(db.String(250),nullable = False)
-    birthdate = db.Column(db.Date)
+    birthdate = db.Column(db.DateTime)
     profile = db.Column(db.String(100))
 
 

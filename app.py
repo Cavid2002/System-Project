@@ -15,7 +15,7 @@ def get_access_to_db():
 
 def create_app():
     app = Flask(__name__,instance_relative_config = True)
-    app.config['UPLOADED_IMG_DEST'] = "uploads/"
+    app.config['UPLOADED_IMG_DEST'] = "static/uploads/"
     app.config['SQLALCHEMY_DATABASE_URI'] = get_access_to_db()
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = '0bd82f50a17b43654c84ab57a32d54aaec71f88dbee356e1a5'
@@ -23,9 +23,6 @@ def create_app():
     return app
 
 app = create_app()
-
-from controls import *
-
 
 login_manger = LoginManager()
 login_manger.init_app(app)
@@ -36,6 +33,10 @@ migrate = Migrate(app,db)
 
 photos = UploadSet("img", IMAGES)
 configure_uploads(app,photos)
+
+
+from controls import *
+
 
 
 if(__name__ == "__main__"):
