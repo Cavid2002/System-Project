@@ -1,4 +1,4 @@
-from config import db,UserMixin
+from app import db,UserMixin
 
 
 class User(db.Model,UserMixin):
