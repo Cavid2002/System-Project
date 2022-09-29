@@ -35,6 +35,7 @@ photos = UploadSet("img", IMAGES)
 configure_uploads(app,photos)
 
 
+
 from controls import *
 
 

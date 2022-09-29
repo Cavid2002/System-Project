@@ -5,7 +5,6 @@ from werkzeug.utils import secure_filename
 from app import migrate,app,photos,login_manger
 from forms import LoginForm,SignUpForm
 from uuid import uuid4
-from os import makedirs
 from models import *
 
 
@@ -20,7 +19,7 @@ def main():
     res = make_response(render_template("main.html",user_info = current_user))
     return res
 
-@app.route("/login/",methods = ['GET','POST'])
+@app.route("/login",methods = ['GET','POST'])
 def logIn():
     logform = LoginForm()
     if(logform.validate_on_submit()):
@@ -34,25 +33,28 @@ def logIn():
     return res
 
 
-@app.route("/sign-up/",methods = ['GET','POST'])
+@app.route("/sign-up",methods = ['GET','POST'])
 def signUp():
     signForm = SignUpForm()
     if(signForm.validate_on_submit()):
         if(signForm.password.data == signForm.repassword.data):
-            newid = str(uuid4())
-            makedirs("uploads/" + newid)
-            file = photos.save(storage = signForm.profile.data,folder = newid)
-            print(file)
-            new_user = User(
-                username = signForm.username.data,
-                email = signForm.email.data,
-                password = generate_password_hash(signForm.password.data),
-                gender = signForm.gender.data,
-                birthdate = signForm.birthdate.data,
-                profile = file
-            )
-            new_user.save()
-            return redirect(url_for("logIn"))
+            usr = User.query.filter_by(email = signForm.email.data)
+            if(usr != None):
+                newid = str(uuid4())
+                file = photos.save(storage = signForm.profile.data,folder = newid)
+                print(file)
+                new_user = User(
+                    username = signForm.username.data,
+                    email = signForm.email.data,
+                    password = generate_password_hash(signForm.password.data),
+                    gender = signForm.gender.data,
+                    birthdate = signForm.birthdate.data,
+                    profile = file
+                )
+                new_user.save()
+                return redirect(url_for("logIn"))
+            else:
+                flash("User with this E-mail already exists!")
         else:
             flash("Passwords don't match!")
     res = make_response(render_template("sign-up.html",form = signForm))
@@ -68,6 +70,6 @@ def logOut():
 
 @app.errorhandler(404)
 def render404(error):
-    res = make_response("<h2>[INFO] -->[Error 404]Page not Found!</h2>",404)
+    res = make_response("<h2>[Error 404]Page not Found!</h2>",404)
     return res
 
