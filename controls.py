@@ -1,4 +1,3 @@
-import profile
 from flask import render_template,redirect,make_response,url_for,flash
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
