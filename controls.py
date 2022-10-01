@@ -2,7 +2,7 @@ from flask import render_template,redirect,make_response,url_for,flash
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
-from app import migrate,app,photos,login_manger
+from app import app,photos,login_manger
 from forms import LoginForm,SignUpForm,UploadPhoto
 from uuid import uuid4
 from models import *
@@ -13,14 +13,17 @@ def load_user(user_id):
     return User.query.filter_by(id = user_id).first()
 
 
+
 @login_required
 @app.route("/main",methods = ['GET','POST'])
 def main():
     form = UploadPhoto()
     if(form.validate_on_submit()):
         file = photos.save(storage=form.img.data,folder=current_user.folder)
-    res = make_response(render_template("main.html",user_info = current_user))
+    res = make_response(render_template("main.html",user_info = current_user,form = form))
     return res
+
+
 
 @app.route("/login",methods = ['GET','POST'])
 def logIn():
@@ -32,8 +35,9 @@ def logIn():
             return redirect(url_for("main"))
         else:
             flash("Invalid Email or Password!")
-    res = make_response(render_template("login.html",form = logform),200)
+    res = make_response(render_template("login.html",form = logform))
     return res
+
 
 
 @app.route("/sign-up",methods = ['GET','POST'])
@@ -58,12 +62,13 @@ def signUp():
                 flash("User with this E-mail already exists!")
         else:
             flash("Passwords don't match!")
-    res = make_response(render_template("sign-up.html",form = signForm))
+    res = make_response(render_template("sign-up.html",form = signForm),200)
     return res
 
 
-@app.route("/logout")
+
 @login_required
+@app.route("/logout")
 def logOut():
     logout_user()
     return redirect(url_for('logIn'))

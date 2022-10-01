@@ -34,10 +34,14 @@
                             {{form.gender(class="form-control")}}
                         </div>
 
-                        <div> 
-                            {{form.profile.label(class="form-label")}}<br>
-                            {{form.profile(class="form-control")}}
+                        <div class="pt-4">
+                            
+                            <button type="submit" class="btn btn-outline-primary fw-bold w-100">Create Account</button>
+
+                           
+                            
                         </div>
+
 
                     </div>
 
@@ -62,19 +66,15 @@
                             {{form.birthdate(class="form-control")}}
                         </div>
 
-                        <div class="pt-4">
-                            
-                            <button type="submit" class="btn btn-outline-primary fw-bold w-100">Create Account</button>
 
-                            {% for msg in get_flashed_messages() %}
-                            <div class="error-message">
-                                <span>
-                                    {{msg}}                            
-                                </span>
-                            </div><br>
-                            {% endfor %}
-                            
-                        </div>
+                        {% for msg in get_flashed_messages() %}
+                        <div class="error-message">
+                            <span>
+                                {{msg}}                            
+                            </span>
+                        </div><br>
+                        {% endfor %}
+                        
                     </div>
 
 

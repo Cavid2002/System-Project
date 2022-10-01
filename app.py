@@ -5,7 +5,6 @@ from flask_login import LoginManager,UserMixin
 from flask_uploads import IMAGES, UploadSet, configure_uploads
 
 
-
 def get_access_to_db():
     file = open(".db",'r')
     res = file.readline()
@@ -37,7 +36,6 @@ configure_uploads(app,photos)
 
 
 from controls import *
-
 
 
 if(__name__ == "__main__"):
