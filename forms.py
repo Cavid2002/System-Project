@@ -15,5 +15,8 @@ class SignUpForm(FlaskForm):
     repassword = PasswordField(label="Renter Password:",validators=[DataRequired()])
     gender = SelectField(label="Enter Your Gender:",validators=[DataRequired()],
                         choices=[("m","MALE"),("f","FEMALE")])
-    profile = FileField(label="Enter Profile Photo:")
     birthdate = DateField(label="Enter Your Birthdate:",validators=[DataRequired()])
+    
+class UploadPhoto(FlaskForm):
+    profile = FileField(label="Enter Profile Photo:")
+    img = FileField(label="Add new photo:")

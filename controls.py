@@ -1,9 +1,10 @@
+import profile
 from flask import render_template,redirect,make_response,url_for,flash
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
 from app import migrate,app,photos,login_manger
-from forms import LoginForm,SignUpForm
+from forms import LoginForm,SignUpForm,UploadPhoto
 from uuid import uuid4
 from models import *
 
@@ -14,8 +15,11 @@ def load_user(user_id):
 
 
 @login_required
-@app.route("/main")
+@app.route("/main",methods = ['GET','POST'])
 def main():
+    form = UploadPhoto()
+    if(form.validate_on_submit()):
+        file = photos.save(storage=form.img.data,folder=current_user.folder)
     res = make_response(render_template("main.html",user_info = current_user))
     return res
 
@@ -41,15 +45,13 @@ def signUp():
             usr = User.query.filter_by(email = signForm.email.data)
             if(usr != None):
                 newid = str(uuid4())
-                file = photos.save(storage = signForm.profile.data,folder = newid)
-                print(file)
                 new_user = User(
                     username = signForm.username.data,
                     email = signForm.email.data,
                     password = generate_password_hash(signForm.password.data),
                     gender = signForm.gender.data,
                     birthdate = signForm.birthdate.data,
-                    profile = file
+                    folder = newid
                 )
                 new_user.save()
                 return redirect(url_for("logIn"))
