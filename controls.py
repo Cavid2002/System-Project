@@ -45,16 +45,18 @@ def signUp():
     signForm = SignUpForm()
     if(signForm.validate_on_submit()):
         if(signForm.password.data == signForm.repassword.data):
-            usr = User.query.filter_by(email = signForm.email.data)
-            if(usr != None):
-                newid = str(uuid4())
+            usr = User.query.filter_by(email = signForm.email.data).first()
+            if(usr == None):
+                folderID = str(uuid4())
+                default_img = "person_icon.png"
                 new_user = User(
                     username = signForm.username.data,
                     email = signForm.email.data,
                     password = generate_password_hash(signForm.password.data),
                     gender = signForm.gender.data,
                     birthdate = signForm.birthdate.data,
-                    folder = newid
+                    profile = default_img,
+                    folder = folderID
                 )
                 new_user.save()
                 return redirect(url_for("logIn"))
