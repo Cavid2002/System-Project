@@ -3,4 +3,4 @@
 /migrations
 .db
 test.py
-/static/uploads
+/static/uploads/*
