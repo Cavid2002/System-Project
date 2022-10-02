@@ -1,4 +1,5 @@
-from flask import render_template,redirect,make_response,url_for,flash
+from flask import render_template,redirect,make_response,url_for,flash,request
+from requests import request
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
@@ -8,19 +9,32 @@ from uuid import uuid4
 from models import *
 
 
+
 @login_manger.user_loader
 def load_user(user_id):
     return User.query.filter_by(id = user_id).first()
 
 
 
-@login_required
 @app.route("/main",methods = ['GET','POST'])
+@login_required
 def main():
-    form = UploadPhoto()
-    if(form.validate_on_submit()):
-        file = photos.save(storage=form.img.data,folder=current_user.folder)
-    res = make_response(render_template("main.html",user_info = current_user,form = form))
+    formdata = UploadPhoto()
+    if(formdata.validate_on_submit()):
+        print(formdata.img.data)
+        print(formdata.profile.data)
+        if(formdata.img.data != None):
+            file = photos.save(storage=formdata.img.data,folder=current_user.folder)
+            newimg = Images(
+            user_id = current_user.id,
+            img_path = file)
+            newimg.save()
+        if(formdata.profile.data != None):
+            profile = photos.save(storage=formdata.profile.data,folder=current_user.folder)
+            current_user.profile = profile
+            current_user.save()
+        return redirect(url_for('main'))
+    res = make_response(render_template("main.html",user_info = current_user,form = formdata))
     return res
 
 
@@ -69,8 +83,8 @@ def signUp():
 
 
 
-@login_required
 @app.route("/logout")
+@login_required
 def logOut():
     logout_user()
     return redirect(url_for('logIn'))
