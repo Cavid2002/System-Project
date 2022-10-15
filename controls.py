@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
 from app import app,photos,login_manger
-from forms import LoginForm,SignUpForm,UploadPhoto,UploadProfile
+from forms import LoginForm,SignUpForm,UploadProfile
 from uuid import uuid4
 from models import *
 
@@ -18,21 +18,17 @@ def load_user(user_id):
 @login_required
 def main():
     formProfile = UploadProfile()
-    formImg = UploadPhoto()
     if(formProfile.validate_on_submit()):
-        profile = photos.save(storage=formProfile.profile.data,folder=current_user.folder)
-        print(profile)
-        current_user.profile = profile
-        current_user.save()
+        if(formProfile.profile.data):
+            profile = photos.save(storage=formProfile.profile.data,folder=current_user.folder)
+            current_user.profile = profile
+            current_user.save()
+        if(formProfile.img.data):
+            file = photos.save(storage=formProfile.img.data,folder=current_user.folder)
+            new_img = Images(img_path=file,user_id=current_user.id)
+            new_img.save()
         return redirect(url_for('main'))
-
-    if(formImg.validate_on_submit()):
-        file = photos.save(storage=formImg.img.data,folder=current_user.folder)
-        newImg = Images(img_path = file,user_id = current_user.id)
-        newImg.save()
-        return redirect(url_for('main'))
-
-    res = make_response(render_template("main.html",user_info = current_user,form = formProfile,formImg = formImg))
+    res = make_response(render_template("main.html",user_info = current_user,form = formProfile))
     return res
 
 

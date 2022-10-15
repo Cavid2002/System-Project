@@ -33,6 +33,10 @@
                             <div>
                                 {{form.profile.label(class="form-label")}}<br>
                                 {{form.profile(class="form-control")}}
+                            </div>
+                            <div>
+                                {{form.img.label(class="form-label")}}<br>
+                                {{form.img(class="form-control")}}
                                 <button type="submit" class="btn btn-primary">Load</button>
                             </div>
                         </div>
@@ -42,16 +46,11 @@
         </div>
         
         <div class="container">
-            <form action="#" enctype="multipart/form-data" method="POST">
-                {{formImg.csrf_token}}
-                <div>
-                    {{formImg.img.label(class="form-label")}}<br>
-                    {{formImg.img(class="form-control")}}
-                    <button type="submit" class="btn btn-primary">Load</button>
-                </div>
-            </form>
+
             <div class="d-flex">
-                <img src="" alt="">
+                <div>
+                    <img src="" alt="">
+                </div>
             </div>
 
         </div>

@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired,Length
 
 class LoginForm(FlaskForm):
     email = EmailField(label="Enter Email:",validators=[DataRequired(),Length(min = 10)])
-    password = PasswordField(label="Enter Password",validators=[DataRequired()])
+    password = PasswordField(label="Enter Password:",validators=[DataRequired()])
     remember_user = BooleanField(label="Remember me!")
 
 
@@ -20,6 +20,6 @@ class SignUpForm(FlaskForm):
     
 class UploadProfile(FlaskForm):
     profile = FileField(label="Enter Profile Photo:")
-
-class UploadPhoto(FlaskForm):
     img = FileField(label="Add new photo:")
+
+    
