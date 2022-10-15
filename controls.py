@@ -1,5 +1,4 @@
 from flask import render_template,redirect,make_response,url_for,flash,request
-from requests import request
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
@@ -38,8 +37,7 @@ def main():
     return res
 
 
-
-@app.route("/login",methods = ['GET','POST'])
+@app.route('/login',methods = ['GET','POST'])
 def logIn():
     logform = LoginForm()
     if(logform.validate_on_submit()):
@@ -95,3 +93,7 @@ def render404(error):
     res = make_response("<h2>[Error 404]Page not Found!</h2>",404)
     return res
 
+
+
+if(__name__ == "__main__"):
+    app.run(debug = True)

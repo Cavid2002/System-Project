@@ -6,14 +6,14 @@ from flask_uploads import IMAGES, UploadSet, configure_uploads
 
 
 def get_access_to_db():
-    file = open(".db",'r')
+    file = open("data.db",'r')
     res = file.readline()
     file.close()
     return res
 
 
 def create_app():
-    app = Flask(__name__,instance_relative_config = True)
+    app = Flask(__name__)
     app.config['UPLOADED_IMG_DEST'] = "static/uploads/"
     app.config['UPLOADED_PHOTOS_ALLOW'] = set(['png', 'jpg', 'jpeg'])
     app.config['SQLALCHEMY_DATABASE_URI'] = get_access_to_db()
@@ -37,9 +37,11 @@ photos = UploadSet("img", IMAGES)
 configure_uploads(app,photos)
 
 
-
 from controls import *
-
 
 if(__name__ == "__main__"):
     app.run(debug = True)
+
+
+
+#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
