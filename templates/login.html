@@ -25,6 +25,10 @@
                     {{form.password.label(class="form-label")}}<br>
                     {{form.password(class="form-control")}}
                 </div>
+                <div>
+                    {{form.remember_user}}
+                    {{form.remember_user.label}}
+                </div>
                 {% for msg in get_flashed_messages() %}
                     <div class="error-message">
                         <span>

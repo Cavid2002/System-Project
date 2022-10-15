@@ -6,7 +6,7 @@ from flask_uploads import IMAGES, UploadSet, configure_uploads
 
 
 def get_access_to_db():
-    file = open("data.db",'r')
+    file = open("database.txt",'r')
     res = file.readline()
     file.close()
     return res
@@ -15,7 +15,6 @@ def get_access_to_db():
 def create_app():
     app = Flask(__name__)
     app.config['UPLOADED_IMG_DEST'] = "static/uploads/"
-    app.config['UPLOADED_PHOTOS_ALLOW'] = set(['png', 'jpg', 'jpeg'])
     app.config['SQLALCHEMY_DATABASE_URI'] = get_access_to_db()
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = '0bd82f50a17b43654c84ab57a32d54aaec71f88dbee356e1a5'
@@ -27,6 +26,7 @@ app = create_app()
 login_manger = LoginManager()
 login_manger.login_view = "logIn"
 login_manger.login_message = "You are not logged in!"
+login_manger.session_protection = "strong"
 login_manger.init_app(app)
 
 db = SQLAlchemy(app)
@@ -43,5 +43,3 @@ if(__name__ == "__main__"):
     app.run(debug = True)
 
 
-
-#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

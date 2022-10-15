@@ -1,7 +1,7 @@
 /virtual
 /__pycache__
 /migrations
-data.db
+database.txt
 token.txt
 test.py
 /static/uploads/*

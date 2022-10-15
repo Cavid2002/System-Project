@@ -3,10 +3,9 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
 from app import app,photos,login_manger
-from forms import LoginForm,SignUpForm,UploadPhoto
+from forms import LoginForm,SignUpForm,UploadPhoto,UploadProfile
 from uuid import uuid4
 from models import *
-
 
 
 @login_manger.user_loader
@@ -15,35 +14,37 @@ def load_user(user_id):
 
 
 
-@app.route("/main",methods = ['GET','POST'])
+@app.route("/main/",methods = ['GET','POST'])
 @login_required
 def main():
-    formdata = UploadPhoto()
-    if(formdata.validate_on_submit()):
-        print(formdata.img.data)
-        print(formdata.profile.data)
-        if(formdata.img.data != None):
-            file = photos.save(storage=formdata.img.data,folder=current_user.folder)
-            newimg = Images(
-            user_id = current_user.id,
-            img_path = file)
-            newimg.save()
-        if(formdata.profile.data != None):
-            profile = photos.save(storage=formdata.profile.data,folder=current_user.folder)
-            current_user.profile = profile
-            current_user.save()
+    formProfile = UploadProfile()
+    formImg = UploadPhoto()
+    if(formProfile.validate_on_submit()):
+        profile = photos.save(storage=formProfile.profile.data,folder=current_user.folder)
+        print(profile)
+        current_user.profile = profile
+        current_user.save()
         return redirect(url_for('main'))
-    res = make_response(render_template("main.html",user_info = current_user,form = formdata))
+
+    if(formImg.validate_on_submit()):
+        file = photos.save(storage=formImg.img.data,folder=current_user.folder)
+        newImg = Images(img_path = file,user_id = current_user.id)
+        newImg.save()
+        return redirect(url_for('main'))
+
+    res = make_response(render_template("main.html",user_info = current_user,form = formProfile,formImg = formImg))
     return res
 
 
-@app.route('/login',methods = ['GET','POST'])
+
+
+@app.route('/login/',methods = ['GET','POST'])
 def logIn():
     logform = LoginForm()
     if(logform.validate_on_submit()):
         user = User.query.filter(User.email == logform.email.data).first()
         if(user and check_password_hash(user.password,logform.password.data)):
-            login_user(user)
+            login_user(user,remember=logform.remember_user.data)
             return redirect(url_for("main"))
         else:
             flash("Invalid Email or Password!")
@@ -52,7 +53,8 @@ def logIn():
 
 
 
-@app.route("/sign-up",methods = ['GET','POST'])
+
+@app.route("/sign-up/",methods = ['GET','POST'])
 def signUp():
     signForm = SignUpForm()
     if(signForm.validate_on_submit()):
@@ -81,7 +83,7 @@ def signUp():
 
 
 
-@app.route("/logout")
+@app.route("/logout/")
 @login_required
 def logOut():
     logout_user()
@@ -93,7 +95,3 @@ def render404(error):
     res = make_response("<h2>[Error 404]Page not Found!</h2>",404)
     return res
 
-
-
-if(__name__ == "__main__"):
-    app.run(debug = True)
