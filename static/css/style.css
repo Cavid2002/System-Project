@@ -78,3 +78,13 @@
     font-size: 25px;
     font-weight: bold;
 }
+
+.user-image{
+    height: 250px;
+    width: 28vw;
+}
+
+.user-image img{
+    height: 100%;
+    width: 100%;
+}

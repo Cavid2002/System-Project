@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 from app import app,photos,login_manger
 from forms import LoginForm,SignUpForm,UploadProfile
 from uuid import uuid4
+from os import remove
 from models import *
 
 
@@ -20,15 +21,19 @@ def main():
     formProfile = UploadProfile()
     if(formProfile.validate_on_submit()):
         if(formProfile.profile.data):
+            remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
             profile = photos.save(storage=formProfile.profile.data,folder=current_user.folder)
-            current_user.profile = profile
+            splitprofile = profile.split("/")
+            current_user.profile = splitprofile[1]
             current_user.save()
         if(formProfile.img.data):
             file = photos.save(storage=formProfile.img.data,folder=current_user.folder)
-            new_img = Images(img_path=file,user_id=current_user.id)
+            spiltname = file.split("/")
+            new_img = Images(img_path=spiltname[1],user_id=current_user.id)
             new_img.save()
         return redirect(url_for('main'))
-    res = make_response(render_template("main.html",user_info = current_user,form = formProfile))
+    userImg = Images.query.filter_by(user_id = current_user.id)
+    res = make_response(render_template("main.html",user_info = current_user,form = formProfile,images = userImg))
     return res
 
 
