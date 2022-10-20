@@ -12,8 +12,19 @@ class User(db.Model,UserMixin):
     folder = db.Column(db.String(100))
     img = db.relationship('Images', backref='user', lazy=True)
     comments = db.relationship('Comments',backref = 'user', lazy = True)
+    video = db.relationship('Videos',backref='user', lazy=True)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
 
+class Videos(db.Model):
+    id = db.Column(db.Integer,primary_key = True)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
+    video_path = db.Column(db.String(100))
+
+    
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -39,3 +50,6 @@ class Comments(db.Model):
         db.session.commit()
 
 db.create_all()
+
+
+

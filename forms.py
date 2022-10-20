@@ -18,8 +18,12 @@ class SignUpForm(FlaskForm):
                         choices=[("m","MALE"),("f","FEMALE")])
     birthdate = DateField(label="Enter Your Birthdate:",validators=[DataRequired()])
     
-class UploadProfile(FlaskForm):
-    profile = FileField(label="Enter Profile Photo:")
+class UploadImage(FlaskForm):
+    profile = FileField(label="Change Profile Photo:")
     img = FileField(label="Add new photo:")
 
+
+class UploadVideo(FlaskForm):
+    profile = FileField(label="Change Profile Photo:")
+    video = FileField(label="Add new Video:")
     
