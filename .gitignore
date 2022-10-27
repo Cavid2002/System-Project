@@ -4,4 +4,4 @@
 database.txt
 token.txt
 test.py
-static/uploads/*
+static/uploads/

@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
 
-    <title>Log-in</title>
+    <title>Recover</title>
 
 </head>
 <body>
@@ -17,18 +17,12 @@
         <div class="log-in-container">
             <form  method="post" enctype="multipart/form-data">
                 {{form.csrf_token}}
+    
                 <div>
-                    {{form.email.label(class="form-label")}}<br>
+                    {{form.email.label(class="form-label fs-6")}}<br>
                     {{form.email(class="form-control")}}
                 </div>
-                <div>
-                    {{form.password.label(class="form-label")}}<br>
-                    {{form.password(class="form-control")}}
-                </div>
-                <div>
-                    {{form.remember_user}}
-                    {{form.remember_user.label}}
-                </div>
+                
                 {% for msg in get_flashed_messages() %}
                     <div class="error-message">
                         <span>
@@ -37,12 +31,8 @@
                     </div>
                 {% endfor %}
                 <div>
-                    <button type="submit" class="btn btn-outline-primary fs-6 fw-bold">Log In</button>
-                    <a class="btn btn-outline-secondary fw-bold" href="/sign-up">Create New Account</a>
-                </div>
-                
-                <div>
-                    <a href="{{url_for('recover')}}">Forgot Password?</a>
+                    <button type="submit" class="btn btn-outline-primary fs-6 fw-bold">Send Message</button>
+                    <a class="btn btn-outline-secondary fw-bold" href="{{url_for('logIn')}}">Back to Login</a>
                 </div>
                 
             </form>        

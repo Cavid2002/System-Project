@@ -27,3 +27,6 @@ class UploadVideo(FlaskForm):
     profile = FileField(label="Change Profile Photo:")
     video = FileField(label="Add new Video:")
     
+
+class PasswordRecoverForm(FlaskForm):
+    email = EmailField(label="Provide your email for Password recovery:")

@@ -2,8 +2,9 @@ from flask import render_template,redirect,make_response,url_for,flash,request
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
-from app import app,photos,login_manger,video
-from forms import LoginForm,SignUpForm,UploadImage,UploadVideo
+from flask_mail import Message
+from app import app,photos,login_manger,video,mail
+from forms import LoginForm,SignUpForm,UploadImage,UploadVideo,PasswordRecoverForm
 from uuid import uuid4
 from os import remove
 from models import *
@@ -14,13 +15,31 @@ def load_user(user_id):
     return User.query.filter_by(id = user_id).first()
 
 
+
+@app.route("/recover/",methods = ['GET','POST'])
+def recover():
+    rform = PasswordRecoverForm()
+    if(rform.validate_on_submit()):
+        em = rform.email.data
+        user = User.query.filter_by(email = em).first()
+        if(user != None):
+            msg = Message("Email Recovery",recipients=[em])
+            mail.send(msg)
+            return redirect(url_for('recover'))
+        else:
+            flash("User with this email doesn't exists!")
+    res = make_response(render_template("recover.html",form = rform))
+    return res
+
+    
 @app.route("/main/images",methods = ['GET','POST'])
 @login_required
 def main():
     formImg = UploadImage()
     if(formImg.validate_on_submit()):
         if(formImg.profile.data):
-            remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
+            if(current_user.profile != "person-icon.png"):
+                remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
             profile = photos.save(storage=formImg.profile.data,folder=current_user.folder)
             splitprofile = profile.split("/")
             current_user.profile = splitprofile[1]
@@ -47,8 +66,9 @@ def videos():
             new_video = Videos(video_path=spiltname[1],user_id=current_user.id)
             new_video.save()
         if(formVideo.profile.data):
-            remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
-            profile = photos.save(storage=formVideo.profile.    data,folder=current_user.folder)
+            if(current_user.profile != "person-icon.png"):
+                remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
+            profile = photos.save(storage=formVideo.profile.data,folder=current_user.folder)
             splitprofile = profile.split("/")
             current_user.profile = splitprofile[1]
             current_user.save()
@@ -80,7 +100,7 @@ def signUp():
     if(signForm.validate_on_submit()):
         if(signForm.password.data == signForm.repassword.data):
             usr = User.query.filter_by(email = signForm.email.data).first()
-            if(usr == None):
+            if(not usr):
                 folderID = str(uuid4())
                 default_img = "person-icon.png"
                 new_user = User(
