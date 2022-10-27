@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager,UserMixin
 from flask_uploads import IMAGES, UploadSet, configure_uploads
 from flask_mail import Mail
+import os
 
 
 def get_access_to_db():
@@ -20,17 +21,18 @@ def create_app():
     app.config['UPLOADED_IMG_DEST'] = "static/uploads/"
     app.config['UPLOADED_VIDEO_DEST'] = "static/uploads/"
     
-    app.config['SQLALCHEMY_DATABASE_URI'] = get_access_to_db()
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = '0bd82f50a17b43654c84ab57a32d54aaec71f88dbee356e1a5'
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
     
-    app.config['MAIL_SERVER'] = ''
-    app.config['MAIL_PORT'] = ""
-    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_SERVER'] = "smtp.gmail.com"
+   
+    app.config['MAIL_USE_TLS'] = False
     app.config['MAIL_USE_SSL'] = True
-    app.config['MAIL_USERNAME'] = ""
-    app.config['MAIL_PASSWORD'] = ""
-    app.config['MAIL_DEFAULT_SENDER'] = ""
+    app.config['MAIL_PORT'] = 465
+    app.config['MAIL_USERNAME'] = "mygalerynoreply@gmail.com"
+    app.config['MAIL_PASSWORD'] = os.environ.get('PASSWORD')
+    app.config['MAIL_DEFAULT_SENDER'] = "mygalerynoreply@gmail.com"
     app.config['MAIL_MAX_EMAILS'] = 2
     app.config['MAIL_ASCII_ATTACHMENTS'] = False
     
@@ -64,3 +66,4 @@ if(__name__ == "__main__"):
     app.run(debug = True)
 
 
+#lzlunpqltjpuqvbs
