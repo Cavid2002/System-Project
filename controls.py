@@ -63,7 +63,7 @@ def signUp():
             usr = User.query.filter_by(email = signForm.email.data).first()
             if(usr == None):
                 folderID = str(uuid4())
-                default_img = "person_icon.png"
+                default_img = "person-icon.png"
                 new_user = User(
                     username = signForm.username.data,
                     email = signForm.email.data,
