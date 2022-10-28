@@ -15,7 +15,7 @@ from models import *
 @app.before_request
 def make_session_permanent():
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(days=2)
+    app.permanent_session_lifetime = timedelta(days=5)
 
 
 @login_manger.user_loader

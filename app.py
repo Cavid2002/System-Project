@@ -7,12 +7,6 @@ from flask_mail import Mail
 import os
 
 
-def get_access_to_db():
-    file = open("database.txt",'r')
-    res = file.readline()
-    file.close()
-    return res
-
 
 def create_app():
     app = Flask(__name__)
