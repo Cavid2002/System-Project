@@ -4,7 +4,7 @@ from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
 from flask_mail import Message
 from app import app,photos,login_manger,video,mail
-from forms import LoginForm,SignUpForm,UploadImage,UploadVideo,PasswordRecoverForm
+from forms import LoginForm,SignUpForm,UploadImage,UploadVideo,PasswordRecoverForm,NewPasswordForm
 from flask_uploads import UploadNotAllowed
 from uuid import uuid4
 from datetime import timedelta
@@ -35,7 +35,7 @@ def recover():
             session['email'] = em
             session['token'] = token
             msg = Message(f"Email Recovery:",recipients=[em])
-            msg.body = f"Email Recovery token is:http://127.0.0.1:5000/recoverinfo/{token} \n Do not share with anyone!\n if it wasn't you ignore this message"
+            msg.body = f"Email Recovery token is:http://127.0.0.1:5000/recoverinfo/{token} -> Do not share with anyone!\n if it wasn't you ignore this message"
             mail.send(msg)
         else:
             flash("User with this email doesn't exists!")
@@ -49,9 +49,23 @@ def recoverCheck(tk):
         login_user(user)
         session.pop('token')
         session.pop('email')
-        return redirect(url_for('main'))
+        return redirect(url_for('changepass'))
     return make_response("<h2>Access Denied</h2>",403)
     
+@app.route("/main/changepass",methods = ['GET','POST'])
+@login_required
+def changepass():
+    repassForm = NewPasswordForm()
+    if(repassForm.validate_on_submit()):
+        if(repassForm.password.data == repassForm.repassword.data):
+            current_user.password = generate_password_hash(repassForm.password.data)
+            current_user.save()
+            return redirect(url_for("main"))
+        else:
+            flash("passwords don't match!")
+    res = make_response(render_template("recpass.html",form = repassForm))
+    return res
+
 @app.route("/main/images",methods = ['GET','POST'])
 @login_required
 def main():
