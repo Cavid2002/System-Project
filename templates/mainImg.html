@@ -46,6 +46,15 @@
                             <div>
                                 {{form.profile.label(class="form-label")}}<br>
                                 {{form.profile(class="form-control")}}
+
+                                {% for msg in get_flashed_messages() %}
+                                    <div class="error-message">
+                                        <span>
+                                            {{msg}}                            
+                                        </span>
+                                    </div><br>
+                                {% endfor %}
+
                             </div>
                             <div>
                                 {{form.img.label(class="form-label")}}<br>

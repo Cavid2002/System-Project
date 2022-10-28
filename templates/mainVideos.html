@@ -18,7 +18,11 @@
     <main class="container">
         <div class="mpage-flex">
             <div class="mpage-img">
-                <img src="{{url_for('static',filename='uploads/'+ user_info.folder + '/' + user_info.profile)}}" alt="">
+                {% if user_info.profile == 'person-icon.png'%}
+                    <img src="{{url_for('static',filename='uploads/' + user_info.profile)}}" alt="">
+                {% else %}
+                    <img src="{{url_for('static',filename='uploads/'+ user_info.folder + '/' + user_info.profile)}}" alt="">
+                {% endif%}
             </div>
             <div class="mpage-info">
                 <p>Username:{{user_info.username}}</p>
@@ -42,6 +46,14 @@
                             <div>
                                 {{form.profile.label(class="form-label")}}<br>
                                 {{form.profile(class="form-control")}}
+                                
+                                {% for msg in get_flashed_messages() %}
+                                    <div class="error-message">
+                                        <span>
+                                        {{msg}}                            
+                                        </span>
+                                    </div>
+                                {% endfor %}
                             </div>
                             <div>
                                 {{form.video.label(class="form-label")}}<br>
