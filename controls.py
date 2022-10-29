@@ -16,6 +16,9 @@ def make_session_permanent():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(days=5)
 
+# @app.after_request
+# def clear_session():
+#     ...
 
 @login_manger.user_loader
 def load_user(user_id):
@@ -23,9 +26,34 @@ def load_user(user_id):
 
 
 
-@app.route('search/')
+@app.route('/main/search',methods = ['GET','POST'])
 def search():
-    ...
+    sform = SearchForm()
+    if(sform.validate_on_submit()):
+        user = User.query.filter_by(username = sform.inputdata.data).first()
+        session["searchedUser"] = user.id
+        return redirect(url_for('foundUserImage'))
+    res = make_response(render_template("search.html",form = sform))
+    return res
+
+
+@app.route('/found/images')
+@login_required
+def foundUserImage():
+    user = User.query.filter_by(id = session['searchedUser']).first()
+    images = Images.query.filter_by(user_id = user.id)
+    res = make_response(render_template('userMainImg.html',user_info = user,images = images))
+    return res
+
+
+@app.route('/found/videos/')
+@login_required
+def foundUserVideo():
+    user = User.query.filter_by(id = session['searchedUser']).first()
+    vids = Videos.query.filter_by(user_id = user.id)
+    res = make_response(render_template('userMainVideo.html',user_info = user,vids = vids))
+    return res
+
 
 
 @app.route("/recover/",methods = ['GET','POST'])
@@ -43,8 +71,9 @@ def recover():
             mail.send(msg)
         else:
             flash("User with this email doesn't exists!")
-    res = make_response(render_template("recover.html",form = rform))
+    res = make_response(render_template("recoverMail.html",form = rform))
     return res
+
 
 @app.route("/recoverinfo/<tk>")
 def recoverCheck(tk):
@@ -72,9 +101,12 @@ def changepass():
     res = make_response(render_template("recpass.html",form = repassForm))
     return res
 
+
 @app.route("/main/images",methods = ['GET','POST'])
 @login_required
 def main():
+    if('searchedUser' in session):
+        session.pop('searchedUser')
     formImg = UploadImage()
     if(formImg.validate_on_submit()):
         if(formImg.profile.data):
@@ -94,7 +126,7 @@ def main():
                 flash("Make sure to upload Image file") 
         return redirect(url_for('main'))
     userImg = Images.query.filter_by(user_id = current_user.id)
-    res = make_response(render_template("mainImg.html",user_info = current_user,form = formImg,images = userImg))
+    res = make_response(render_template("myMainImg.html",user_info = current_user,form = formImg,images = userImg))
     return res
 
 
@@ -121,10 +153,18 @@ def videos():
                 flash("Make sure to upload Video file!")
         return redirect(url_for('videos'))
     userVid = Videos.query.filter_by(user_id = current_user.id)
-    res = make_response(render_template("mainVideos.html",user_info = current_user,form = formVideo,vids = userVid))
+    res = make_response(render_template("myMainVideos.html",user_info = current_user,form = formVideo,vids = userVid))
     return res
 
 
+@app.route("/logout/")
+@login_required
+def logOut():
+    logout_user()
+    return redirect(url_for('logIn'))
+
+
+@app.route('/',methods = ['GET','POST'])
 @app.route('/login/',methods = ['GET','POST'])
 def logIn():
     logform = LoginForm()
@@ -146,8 +186,13 @@ def signUp():
     signForm = SignUpForm()
     if(signForm.validate_on_submit()):
         if(signForm.password.data == signForm.repassword.data):
-            usr = User.query.filter_by(email = signForm.email.data).first()
-            if(not usr):
+            usr_em = User.query.filter_by(email = signForm.email.data).first()
+            usr_name = User.query.filter_by(username = signForm.username.data).first()
+            if(usr_name):
+                flash("Username is already taken!")
+            elif(usr_em):
+                flash("User with this E-mail already exists!")
+            else:
                 folderID = str(uuid4())
                 default_img = "person-icon.png"
                 new_user = User(
@@ -161,8 +206,6 @@ def signUp():
                 )
                 new_user.save()
                 return redirect(url_for("logIn"))
-            else:
-                flash("User with this E-mail already exists!")
         else:
             flash("Passwords don't match!")
     res = make_response(render_template("sign-up.html",form = signForm),200)
@@ -170,11 +213,6 @@ def signUp():
 
 
 
-@app.route("/logout/")
-@login_required
-def logOut():
-    logout_user()
-    return redirect(url_for('logIn'))
 
 
 @app.errorhandler(404)
@@ -182,3 +220,6 @@ def render404(error):
     res = make_response("<h2>[Error 404]Page not Found!</h2>",404)
     return res
 
+#value="Ijc1Y2M4MDJkZjAyMDZiZDRhMzAwMDgyYjdlOTc5ZTQ2YmRiODQ3ODgi.Y11w6g.KPajPbsaVKHHSd_0OogqmMHXO-E"
+#value="Ijc1Y2M4MDJkZjAyMDZiZDRhMzAwMDgyYjdlOTc5ZTQ2YmRiODQ3ODgi.Y11xCw.Ar6zJ6GUnDs7qhoTg3cdsWht9b4"
+#value="Ijc1Y2M4MDJkZjAyMDZiZDRhMzAwMDgyYjdlOTc5ZTQ2YmRiODQ3ODgi.Y11xNQ.qSJOiPwcxBhp_6TSSOOGaSHChgE"
