@@ -1,3 +1,4 @@
+from tokenize import String
 from flask_wtf import FlaskForm
 from wtforms import StringField,EmailField,PasswordField,SelectField,FileField,DateField,BooleanField
 from wtforms.validators import DataRequired,Length
@@ -35,3 +36,7 @@ class PasswordRecoverForm(FlaskForm):
 class NewPasswordForm(FlaskForm):
     password = PasswordField(label="Enter new password:",validators=[DataRequired()])
     repassword = PasswordField(label="Confirm password:",validators=[DataRequired()])
+
+
+class SearchForm(FlaskForm):
+    input = StringField(label="Enter the Username:",validators=[DataRequired()])

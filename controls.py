@@ -24,6 +24,11 @@ def load_user(user_id):
 
 
 
+@app.route('search/')
+def search():
+    
+
+
 @app.route("/recover/",methods = ['GET','POST'])
 def recover():
     rform = PasswordRecoverForm()
@@ -51,6 +56,8 @@ def recoverCheck(tk):
         session.pop('email')
         return redirect(url_for('changepass'))
     return make_response("<h2>Access Denied</h2>",403)
+
+
     
 @app.route("/main/changepass",methods = ['GET','POST'])
 @login_required
