@@ -4,13 +4,12 @@ from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
 from flask_mail import Message
 from app import app,photos,login_manger,video,mail
-from forms import LoginForm,SignUpForm,UploadImage,UploadVideo,PasswordRecoverForm,NewPasswordForm
 from flask_uploads import UploadNotAllowed
 from uuid import uuid4
 from datetime import timedelta
 from os import remove,urandom
 from models import *
-
+from forms import *
 
 @app.before_request
 def make_session_permanent():
@@ -26,7 +25,7 @@ def load_user(user_id):
 
 @app.route('search/')
 def search():
-    
+    ...
 
 
 @app.route("/recover/",methods = ['GET','POST'])
