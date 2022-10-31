@@ -37,7 +37,7 @@ def search():
     return res
 
 
-@app.route('/found/images')
+@app.route('/found-images/')
 @login_required
 def foundUserImage():
     user = User.query.filter_by(id = session['searchedUser']).first()
@@ -46,7 +46,7 @@ def foundUserImage():
     return res
 
 
-@app.route('/found/videos/')
+@app.route('/found-videos/')
 @login_required
 def foundUserVideo():
     user = User.query.filter_by(id = session['searchedUser']).first()
@@ -87,7 +87,7 @@ def recoverCheck(tk):
 
 
     
-@app.route("/main/changepass",methods = ['GET','POST'])
+@app.route("/main-changepass/",methods = ['GET','POST'])
 @login_required
 def changepass():
     repassForm = NewPasswordForm()
@@ -102,7 +102,7 @@ def changepass():
     return res
 
 
-@app.route("/main/images",methods = ['GET','POST'])
+@app.route("/main-images/",methods = ['GET','POST'])
 @login_required
 def main():
     if('searchedUser' in session):
@@ -123,14 +123,14 @@ def main():
                 new_img = Images(img_path=spiltname[1],user_id=current_user.id)
                 new_img.save()
             except UploadNotAllowed:
-                flash("Make sure to upload Image file") 
+                flash("Make sure to upload Image file!") 
         return redirect(url_for('main'))
     userImg = Images.query.filter_by(user_id = current_user.id)
     res = make_response(render_template("myMainImg.html",user_info = current_user,form = formImg,images = userImg))
     return res
 
 
-@app.route("/main/videos",methods = ['POST','GET'])
+@app.route("/main-videos/",methods = ['POST','GET'])
 @login_required
 def videos():
     formVideo = UploadVideo()
@@ -179,6 +179,17 @@ def logIn():
     return res
 
 
+@app.route("/comment/")
+@login_required
+def commentsection(username,image_path):
+    cform = CommentForm()
+    if(cform.validate_on_submit()):
+        ...
+    image = Images.query.filter_by(img_path = image_path).first()
+
+    user = User.query.filter_by(username = username).first()
+    res = make_response(render_template("comment.html",form = cform,img = image_path,folder = user.folder))
+    return res
 
 
 @app.route("/sign-up/",methods = ['GET','POST'])
@@ -219,7 +230,3 @@ def signUp():
 def render404(error):
     res = make_response("<h2>[Error 404]Page not Found!</h2>",404)
     return res
-
-#value="Ijc1Y2M4MDJkZjAyMDZiZDRhMzAwMDgyYjdlOTc5ZTQ2YmRiODQ3ODgi.Y11w6g.KPajPbsaVKHHSd_0OogqmMHXO-E"
-#value="Ijc1Y2M4MDJkZjAyMDZiZDRhMzAwMDgyYjdlOTc5ZTQ2YmRiODQ3ODgi.Y11xCw.Ar6zJ6GUnDs7qhoTg3cdsWht9b4"
-#value="Ijc1Y2M4MDJkZjAyMDZiZDRhMzAwMDgyYjdlOTc5ZTQ2YmRiODQ3ODgi.Y11xNQ.qSJOiPwcxBhp_6TSSOOGaSHChgE"
