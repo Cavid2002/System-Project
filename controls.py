@@ -1,4 +1,5 @@
-from flask import render_template,redirect,make_response,url_for,flash,request,session,abort
+from flask import (render_template,redirect,make_response,
+                   url_for,flash,request,session,abort,get_flashed_messages)
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
@@ -183,9 +184,9 @@ def logOut():
 def logIn():
     logform = LoginForm()
     if(logform.validate_on_submit()):
-        user = User.query.filter(User.email == logform.email.data).first()
-        if(user and check_password_hash(user.password,logform.password.data)):
-            login_user(user,remember=logform.remember_user.data)
+        user = User.query.filter(User.email == logform.emailLog.data).first()
+        if(user and check_password_hash(user.password,logform.passwordLog.data)):
+            login_user(user,remember=logform.remember.data)
             return redirect(url_for("main"))
         else:
             flash("Invalid Email or Password!")
@@ -239,6 +240,7 @@ def signUp():
                 new_user.save()
                 return redirect(url_for("logIn"))
         else:
+            print("ERROR")
             flash("Passwords don't match!")
     res = make_response(render_template("sign-up.html",form = signForm),200)
     return res

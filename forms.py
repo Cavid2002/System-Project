@@ -5,9 +5,9 @@ from wtforms.validators import DataRequired,Length
 
 
 class LoginForm(FlaskForm):
-    usernameLog = EmailField(label=Markup('<i class="fa-regular inputIcon fa-at"></i>'),
+    emailLog = EmailField(label=Markup('<i class="fa-solid inputIcon fa-envelope"></i>'),
         validators=[DataRequired(),Length(min = 10)])
-    passwordLog = PasswordField(label=Markup('<i class="fa-solid inputIcon fa-lock"></i></label>'),
+    passwordLog = PasswordField(label=Markup('<i class="fa-solid inputIcon fa-lock"></i>'),
         validators=[DataRequired()])
     remember = BooleanField(label="Remember me!")
 
@@ -35,7 +35,8 @@ class UploadVideo(FlaskForm):
     
 
 class PasswordRecoverForm(FlaskForm):
-    email = EmailField(label="Provide your email for Password recovery:",validators=[DataRequired()])
+    email = EmailField(label="Provide your email for Password recovery:",
+                       validators=[DataRequired()])
 
 
 class NewPasswordForm(FlaskForm):
