@@ -41,4 +41,4 @@ class SearchForm(FlaskForm):
     inputdata = StringField(label="Enter the Username:",validators=[DataRequired()])
 
 class CommentForm(FlaskForm):
-    comment = StringField(validators=[DataRequired()],render_kw={"placeholder": "test"})
+    comment = StringField(validators=[DataRequired()],render_kw={"placeholder": "Enter your comment:"})

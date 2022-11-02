@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager,UserMixin
 from flask_uploads import IMAGES, UploadSet, configure_uploads
 from flask_mail import Mail
+from cryptography.fernet import Fernet
 import os
 
 

@@ -1,4 +1,4 @@
-from flask import render_template,redirect,make_response,url_for,flash,request,session
+from flask import render_template,redirect,make_response,url_for,flash,request,session,abort
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
@@ -8,8 +8,21 @@ from flask_uploads import UploadNotAllowed
 from uuid import uuid4
 from datetime import timedelta
 from os import remove,urandom
+from string import ascii_letters,digits
+from random import choice
 from models import *
 from forms import *
+
+
+
+def generate_string(size: int = 15) -> str:
+    symbols = ascii_letters + digits
+    result = ""
+    for i in range(size):
+        result += choice(symbols)
+    return result
+
+ 
 
 @app.before_request
 def make_session_permanent():
@@ -37,7 +50,7 @@ def search():
     return res
 
 
-@app.route('/found-images/')
+@app.route('/user-images/')
 @login_required
 def foundUserImage():
     user = User.query.filter_by(id = session['searchedUser']).first()
@@ -46,7 +59,7 @@ def foundUserImage():
     return res
 
 
-@app.route('/found-videos/')
+@app.route('/user-videos/')
 @login_required
 def foundUserVideo():
     user = User.query.filter_by(id = session['searchedUser']).first()
@@ -112,13 +125,13 @@ def main():
         if(formImg.profile.data):
             if(current_user.profile != "person-icon.png"):
                 remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
-            profile = photos.save(storage=formImg.profile.data,folder=current_user.folder)
+            profile = photos.save(storage=formImg.profile.data,folder=current_user.folder,name=generate_string()+".")
             splitprofile = profile.split("/")
             current_user.profile = splitprofile[1]
             current_user.save()
         if(formImg.img.data):
             try:
-                file = photos.save(storage=formImg.img.data,folder=current_user.folder)
+                file = photos.save(storage=formImg.img.data,folder=current_user.folder,name=generate_string()+".")
                 spiltname = file.split("/")
                 new_img = Images(img_path=spiltname[1],user_id=current_user.id)
                 new_img.save()
@@ -133,19 +146,20 @@ def main():
 @app.route("/main-videos/",methods = ['POST','GET'])
 @login_required
 def videos():
+
     formVideo = UploadVideo()
     if(formVideo.validate_on_submit()):
         if(formVideo.profile.data):
             if(current_user.profile != "person-icon.png"):
                 remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
-            profile = photos.save(storage=formVideo.profile.data,folder=current_user.folder)
+            profile = photos.save(storage=formVideo.profile.data,folder=current_user.folder,name=generate_string()+".")
             splitprofile = profile.split("/")
             current_user.profile = splitprofile[1]
             current_user.save()
             
         if(formVideo.video.data):
             try:
-                file = video.save(storage = formVideo.video.data,folder=current_user.folder)
+                file = video.save(storage = formVideo.video.data,folder=current_user.folder,name=generate_string()+".")
                 spiltname = file.split("/")
                 new_video = Videos(video_path=spiltname[1],user_id=current_user.id)
                 new_video.save()
@@ -179,16 +193,24 @@ def logIn():
     return res
 
 
-@app.route("/comment/")
+@app.route("/comment/<username>/<image_path>",methods = ['GET','POST'])
 @login_required
-def commentsection(username,image_path):
+def commentsection(image_path,username):
+    image = Images.query.filter_by(img_path = image_path).first()
+    user = User.query.filter_by(username = username).first()
+    if(not user or not image):
+        abort(404)
+    allcomments = Comments.query.filter_by(image_id = image.id)
     cform = CommentForm()
     if(cform.validate_on_submit()):
-        ...
-    image = Images.query.filter_by(img_path = image_path).first()
-
-    user = User.query.filter_by(username = username).first()
-    res = make_response(render_template("comment.html",form = cform,img = image_path,folder = user.folder))
+        new_comment = Comments(
+            image_id = image.id,
+            comment = cform.comment.data,
+            user_name = current_user.username)
+        new_comment.save()
+        return redirect(url_for('commentsection',username = username,image_path = image_path))
+    
+    res = make_response(render_template("comment.html",form = cform,img = image_path,folder = user.folder,comments = allcomments))
     return res
 
 
@@ -204,7 +226,7 @@ def signUp():
             elif(usr_em):
                 flash("User with this E-mail already exists!")
             else:
-                folderID = str(uuid4())
+                folderID = generate_string(20)
                 default_img = "person-icon.png"
                 new_user = User(
                     username = signForm.username.data,
@@ -221,8 +243,6 @@ def signUp():
             flash("Passwords don't match!")
     res = make_response(render_template("sign-up.html",form = signForm),200)
     return res
-
-
 
 
 
