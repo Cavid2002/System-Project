@@ -1,22 +1,28 @@
 from flask_wtf import FlaskForm
+from flask import Markup
 from wtforms import StringField,EmailField,PasswordField,SelectField,FileField,DateField,BooleanField
 from wtforms.validators import DataRequired,Length
 
 
 class LoginForm(FlaskForm):
-    email = EmailField(label="Enter Email:",validators=[DataRequired(),Length(min = 10)])
-    password = PasswordField(label="Enter Password:",validators=[DataRequired()])
-    remember_user = BooleanField(label="Remember me!")
+    usernameLog = EmailField(label=Markup('<i class="fa-regular inputIcon fa-at"></i>'),
+        validators=[DataRequired(),Length(min = 10)])
+    passwordLog = PasswordField(label=Markup('<i class="fa-solid inputIcon fa-lock"></i></label>'),
+        validators=[DataRequired()])
+    remember = BooleanField(label="Remember me!")
 
 
 class SignUpForm(FlaskForm):
-    username = StringField(label="Enter Your Username:",validators=[DataRequired()])
-    email = EmailField(label="Enter Your Email:",validators=[DataRequired(),Length(min = 10)])
-    password = PasswordField(label="Enter Password:",validators=[DataRequired()])
-    repassword = PasswordField(label="Renter Password:",validators=[DataRequired()])
-    gender = SelectField(label="Enter Your Gender:",validators=[DataRequired()],
-                        choices=[("m","MALE"),("f","FEMALE")])
-    birthdate = DateField(label="Enter Your Birthdate:",validators=[DataRequired()])
+    username = StringField(label=Markup('<i class="fa-regular inputIcon fa-at"></i>'),
+        validators=[DataRequired()])
+    email = EmailField(label=Markup('<i class="fa-solid inputIcon fa-envelope"></i>'),
+        validators=[DataRequired(),Length(min = 10)])
+    password = PasswordField(label=Markup('<i class="fa-solid inputIcon fa-lock"></i>'),
+        validators=[DataRequired()])
+    repassword = PasswordField(label=Markup('<i class="fa-solid inputIcon fa-lock"></i>'),
+        validators=[DataRequired()])
+    birthdate = DateField(label=Markup('<i class="fa-solid inputIcon fa-calendar-days"></i>'),
+        validators=[DataRequired()])
     
 class UploadImage(FlaskForm):
     profile = FileField(label="Change Profile Photo:")

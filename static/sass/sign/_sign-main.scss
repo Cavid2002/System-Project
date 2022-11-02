@@ -1,0 +1,118 @@
+main {
+    background-color: #F8F8F8;
+    padding-bottom: 10px;
+    padding: 30px 0;
+
+
+    .container {
+        width: 70%;
+        background-color: white;
+        margin: 0 auto;
+        border-radius: 20px;
+        box-shadow: 5px 5px 8px 10px rgba(0, 0, 0, 0.05);
+
+        .sign-up-main {
+            width: 50%;
+            padding: 60px 50px 60px 80px;
+
+            h1 {
+                margin-bottom: 33px;
+                font-weight: 700;
+                font-size: 36px;
+            }
+
+            .form-btn {
+                padding: 15px 40px;
+                border: none;
+                background-color: map-get($colors, "btnColor");
+                border-radius: 10px;
+                cursor: pointer;
+                color: white;
+                transition: 0.3s all;
+
+                &:hover {
+                    background-color: map-get($colors,"hoverColor");
+                }
+            }
+
+            .form-group {
+                margin-bottom: 25px;
+                position: relative;
+
+                .inputIcon {
+                    position: absolute;
+                    top: 50%;
+                    left: 5px;
+                    font-size: 12px;
+                    transform: translateY(-50%);
+                }
+
+                .visibility {
+                    position: absolute;
+                    right: 5px;
+                    top: 50%;
+                    font-size: 24px;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+
+                }
+
+                input {
+                    border: none;
+                    border-bottom: 1px solid #999;
+                    padding: 6px 30px;
+                    outline: none;
+                    width: 100%;
+
+                    &:focus {
+                        border-bottom: 1px solid black;
+                    }
+                }
+
+                input[type="date"]::-webkit-calendar-picker-indicator {
+                    display: none;
+                }
+
+            }
+
+            .form-checkbox {
+                margin-bottom: 25px;
+            }
+
+            .form-checkbox-left {
+                @include flex(flex-start, center);
+
+                input {
+                    width: 15px;
+                    height: 15px;
+                    margin-right: 10px;
+                }
+            }
+
+            .form-checkbox-right {
+                width: 80%;
+
+
+                label {
+                    font-size: 14px;
+                }
+
+                a {
+                    text-decoration: underline;
+                    color: map-get($colors, "btnColor");
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .sign-up-img {
+        width: 50%;
+        padding: 20px;
+        @include flex(center, center);
+
+        img {
+            width: 100%;
+        }
+    }
+}

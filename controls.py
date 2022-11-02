@@ -232,7 +232,6 @@ def signUp():
                     username = signForm.username.data,
                     email = signForm.email.data,
                     password = generate_password_hash(signForm.password.data),
-                    gender = signForm.gender.data,
                     birthdate = signForm.birthdate.data,
                     profile = default_img,
                     folder = folderID

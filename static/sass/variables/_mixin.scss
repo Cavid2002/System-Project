@@ -1,0 +1,5 @@
+@mixin flex($hdirection, $vdirection) {
+    display: flex;
+    justify-content: $hdirection;
+    align-items: $vdirection;
+}

@@ -1,0 +1,51 @@
+@mixin lg {
+    @media (max-width: map-get($breakpoints, "lg")) {
+        .sign-up-img {
+            display: none !important;
+        }
+
+        .sign-up-main {
+            width: 90%  !important;
+        }
+
+        .form-group{
+            input{
+                width: 100%;
+            }
+            
+        }
+        .form-checkbox-right {
+            width: 100% !important;
+        }
+    }
+}
+
+@mixin xs {
+    @media (max-width: map-get($breakpoints, "xs")) {
+        nav {
+            h1{
+                font-size: 20px;
+            }
+            p,a{
+                font-size: 14px;
+            }
+        }
+
+        .sign-up-main{
+            padding: 20px !important;
+        }    
+        
+        h1{
+            text-align: center;
+        }
+
+        .sign-up-main {
+            width: 100%  !important;
+        }
+
+        .logContainer{
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+    }
+}
