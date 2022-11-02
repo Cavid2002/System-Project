@@ -72,6 +72,7 @@
             </div>
             <div class="d-flex flex-wrap justify-content-between">
                 {%for v in vids%}
+                    <a href="{{url_for('commentsection',image_path=v.video_path,username=user_info.username)}}" title="">
                     <video width="320" height="240" controls>
                         <source src="{{url_for('static',filename = 'uploads/' + user_info.folder + '/' + v.video_path)}}">
                         Your browser does not support the video tag.

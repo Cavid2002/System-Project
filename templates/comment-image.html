@@ -21,14 +21,16 @@
         <div>
             <form method="post" enctype="multipart/form-data">
                 <div>
-                    <input class="form-control w-100" type="text" name="" placeholder="Enter your comment:">
+                    {{form.csrf_token}}
+                    {{form.comment(class="form-control")}}
                 </div>
                 <div class="comments my-5">
+                    {%for comm in comments%}
                     <div class="comment border border-secondary">
-                        <h3>Username:</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <h3>{{comm.user_name}}</h3>
+                        <p>{{comm.comment}}</p>
                     </div>
+                    {% endfor %}
                 </div>
             </form>
         </div>
