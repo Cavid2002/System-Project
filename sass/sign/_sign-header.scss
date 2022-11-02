@@ -1,0 +1,28 @@
+nav {
+    padding: 5%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    justify-content: space-between;
+    background-color: #F8F8F8;
+    .nav-right {
+        justify-content: space-between;
+
+        p {
+            margin-right: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: rgb(56, 56, 231);
+            transition: 0.3s all;
+
+            &:visited {
+                color: rgb(56, 56, 231)
+            }
+
+            &:hover {
+                color: rgb(0, 0, 2)
+            }
+        }
+    }
+}
