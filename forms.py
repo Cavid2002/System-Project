@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask import Markup
-from wtforms import StringField,EmailField,PasswordField,SelectField,FileField,DateField,BooleanField
+from wtforms import (StringField,EmailField,PasswordField,SelectField,FileField,DateField,BooleanField)
 from wtforms.validators import DataRequired,Length
 
 

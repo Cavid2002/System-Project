@@ -1,5 +1,4 @@
-from flask import (render_template,redirect,make_response,
-                   url_for,flash,request,session,abort,get_flashed_messages)
+from flask import (render_template,redirect,make_response,url_for,flash,request,session,abort,get_flashed_messages)
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
@@ -81,7 +80,7 @@ def recover():
             session['email'] = em
             session['token'] = token
             msg = Message(f"Email Recovery:",recipients=[em])
-            msg.body = f"Email Recovery token is:http://127.0.0.1:5000/recoverinfo/{token} -> Do not share with anyone!\n if it wasn't you ignore this message"
+            msg.body = f"Email Recovery token is:http://127.0.0.1:5000/recoverinfo/{token} -> Do not share with anyone!\n if it wasn'tfrom cryptography.fernet import Fernet you ignore this message"
             mail.send(msg)
         else:
             flash("User with this email doesn't exists!")
@@ -240,7 +239,6 @@ def signUp():
                 new_user.save()
                 return redirect(url_for("logIn"))
         else:
-            print("ERROR")
             flash("Passwords don't match!")
     res = make_response(render_template("sign-up.html",form = signForm),200)
     return res
