@@ -136,7 +136,15 @@ main {
     }
 }
 
-.chpass{
+.chpass {
     height: 100vh;
     @include flex(center, center);
+
+    .change-header {
+        font-size: 30px !important;
+    }
+
+    #chPasswordBtn {
+        width: 100%;
+    }
 }

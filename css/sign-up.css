@@ -161,6 +161,12 @@ main .sign-up-img img {
   justify-content: center;
   align-items: center;
 }
+.chpass .change-header {
+  font-size: 30px !important;
+}
+.chpass #chPasswordBtn {
+  width: 100%;
+}
 
 @media (max-width: 992px) {
   .sign-up-img {
@@ -182,6 +188,9 @@ main .sign-up-img img {
   }
   nav p, nav a {
     font-size: 14px;
+  }
+  .chpass .container {
+    padding: 50px 0;
   }
   .sign-up-main {
     padding: 20px !important;
