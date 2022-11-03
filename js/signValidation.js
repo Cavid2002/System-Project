@@ -26,26 +26,19 @@ const toggleVisibilityLog = () => {
     passwordEye(password,icon)
 }
 
-const btn = document.getElementById("signupBtn");
-btn.addEventListener("click", (e) => {
-  // e.preventDefault();
+const toggleVisibilityOld = () => {
+  let password = document.getElementById('oldpassword');
+  let icon = document.getElementById('iconOld');
+  passwordEye(password,icon)
+}
 
-  // Email validation
-  const emailRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-  const email = document.getElementById("email").value;
-  if (email != "") {
-    if (!email.match(emailRegex)) {
-      alert("Email is not correct format");
-    }
-  }
-
-  // Password equality
-  const password = document.getElementById("password");
-  const repassword = document.getElementById("repassword");
-  if (!(password.value == "" || repassword.value == "")) {
-    if (password != repassword) {
-      alert("Passwords must be equal");
-    }
-  }
-});
+const toggleVisibilitynew = () => {
+  let password = document.getElementById('newpassword');
+  let icon = document.getElementById('iconch');
+  passwordEye(password,icon)
+}
+const toggleVisibilitynewRe = () => {
+  let password = document.getElementById('newrepassword');
+  let icon = document.getElementById('iconrech');
+  passwordEye(password,icon)
+}

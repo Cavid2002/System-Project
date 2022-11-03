@@ -3,6 +3,25 @@ main {
     padding-bottom: 10px;
     padding: 30px 0;
 
+    .forget-password {
+        padding-top: 50px;
+        padding-bottom: 50px;
+
+        #forgetemail {
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        #forgetBtn {
+            width: 100%;
+        }
+
+        .forget-header {
+            font-size: 24px !important;
+            text-align: center;
+            margin-bottom: 40px !important;
+        }
+    }
 
     .container {
         width: 70%;
@@ -31,7 +50,7 @@ main {
                 transition: 0.3s all;
 
                 &:hover {
-                    background-color: map-get($colors,"hoverColor");
+                    background-color: map-get($colors, "hoverColor");
                 }
             }
 
@@ -115,4 +134,9 @@ main {
             width: 100%;
         }
     }
+}
+
+.chpass{
+    height: 100vh;
+    @include flex(center, center);
 }

@@ -44,6 +44,25 @@ main {
   padding-bottom: 10px;
   padding: 30px 0;
 }
+
+/* !Forget Password start*/
+main .forget-password {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+main .forget-password #forgetemail {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+main .forget-password #forgetBtn {
+  width: 100%;
+}
+main .forget-password .forget-header {
+  font-size: 24px !important;
+  text-align: center;
+  margin-bottom: 40px !important;
+}
+/* !Forget Password finish*/
 main .container {
   width: 70%;
   background-color: white;
@@ -138,7 +157,14 @@ main .sign-up-img {
 main .sign-up-img img {
   width: 100%;
 }
-
+/* !Change Password start*/
+.chpass {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* !Change Password finish*/
 @media (max-width: 992px) {
   .sign-up-img {
     display: none !important;
