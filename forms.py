@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired,Length
 
 
 class LoginForm(FlaskForm):
-    emailLog = EmailField(label=Markup('<i class="fa-solid inputIcon fa-envelope"></i>'),
+    email = EmailField(label=Markup('<i class="fa-solid inputIcon fa-envelope"></i>'),
         validators=[DataRequired(),Length(min = 10)])
     passwordLog = PasswordField(label=Markup('<i class="fa-solid inputIcon fa-lock"></i>'),
         validators=[DataRequired()])

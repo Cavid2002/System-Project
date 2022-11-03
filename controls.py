@@ -183,7 +183,7 @@ def logOut():
 def logIn():
     logform = LoginForm()
     if(logform.validate_on_submit()):
-        user = User.query.filter(User.email == logform.emailLog.data).first()
+        user = User.query.filter(User.email == logform.email.data).first()
         if(user and check_password_hash(user.password,logform.passwordLog.data)):
             login_user(user,remember=logform.remember.data)
             return redirect(url_for("main"))

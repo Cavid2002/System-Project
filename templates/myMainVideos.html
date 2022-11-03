@@ -27,13 +27,7 @@
             <div class="mpage-info">
                 <p>Username:{{user_info.username}}</p>
                 <p>Birthdate:{{user_info.birthdate.strftime('%d-%m-%Y')}}</p>
-                <p>
-                    {% if user_info.gender == "m" %}
-                        Gender:Male
-                    {%else%}
-                        Gender:Female
-                    {%endif%}
-                </p>
+                
                 <p>Email:{{user_info.email}}</p>
                 <div class="d-flex">
                     <p><a class="btn btn-outline-warning mx-2" href="{{url_for('logOut')}}">Log Out</a></p>

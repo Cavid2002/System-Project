@@ -27,13 +27,7 @@
             <div class="mpage-info">
                 <p>Username:{{user_info.username}}</p>
                 <p>Birthdate:{{user_info.birthdate.strftime('%d-%m-%Y')}}</p>
-                <p>
-                    {% if user_info.gender == "m" %}
-                        Gender:Male
-                    {%else%}
-                        Gender:Female
-                    {%endif%}
-                </p>
+                
                
                 <div class="d-flex">
                     <p>
