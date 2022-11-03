@@ -157,6 +157,7 @@ main .sign-up-img img {
 .login-main{
   width: 100vw;
   height: 90vh;
+  
 }
 
 @media (max-width: 992px) {
