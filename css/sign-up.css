@@ -168,6 +168,10 @@ main .sign-up-img img {
   width: 100%;
 }
 
+#signupBtn {
+  width: 100%;
+}
+
 @media (max-width: 992px) {
   .sign-up-img {
     display: none !important;
