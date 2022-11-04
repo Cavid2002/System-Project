@@ -26,6 +26,17 @@ const toggleVisibilityLog = () => {
     passwordEye(password,icon)
 }
 
+const toggleVisibilitynew = () => {
+  let password = document.getElementById('password');
+  let icon = document.getElementById('iconch');
+  passwordEye(password,icon)
+}
+const toggleVisibilitynewRe = () => {
+  let password = document.getElementById('repassword');
+  let icon = document.getElementById('iconrech');
+  passwordEye(password,icon)
+}
+
 // const btn = document.getElementById("signupBtn");
 // btn.addEventListener("click", (e) => {
 //   // e.preventDefault();
