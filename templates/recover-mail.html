@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forget Password | My Gallery</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/sign-up.css')}}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body class="body">
+    <header>
+      <nav class="d-flex">
+        <div class="nav-left">
+          <h1>Logo</h1>
+        </div>
+        <!-- <img> -->
+        <div class="nav-right d-flex">
+          <p>Already Member?</p>
+          <a href="{{url_for('logIn')}}">Log In</a>
+        </div>
+      </nav>
+    </header> 
+    <main>
+        <div class="container d-flex forget-password">
+            <div class="sign-up-main">
+                <h1 class="forget-header">Forget Password</h1>
+                <form method="post" enctype="multipart/form-data">
+                    {{form.csrf_token}}
+                    <div class="form-group">
+
+                        <label for="email"><i class="fa-solid inputIcon fa-envelope"></i></label>
+                       <!--  <input type="text" required id="email" placeholder="Email" /> -->
+                       {{form.email(placeholder="Enter your email")}}
+                    </div>
+                    <input type="submit" value="Send the recovery link" class="form-btn" id="forgetBtn"/>
+
+                    {%for msg in get_flashed_messages()%}
+                        <div class="error-message">
+                            <span>{{msg}}</span>
+                        </div>
+                    {% endfor %}
+                </form>
+            </div>
+            <div class="sign-up-img">
+                <img src="{{url_for('static',filename = 'img/forget.webp')}}" alt="signup">
+            </div>
+        </div>
+    </main>
+
+    <script src="{{url_for('static',filename='./js/signValidation.js')}}"></script>
+</body>
+
+</html>

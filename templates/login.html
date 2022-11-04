@@ -63,6 +63,7 @@
                         </div>
                     </div>
                     <input type="submit" value="Log In" class="form-btn" id="loginBtn"/>
+                    <p><a href="{{url_for('recover')}}">Forgot password?</a></p>
                     {%for msg in get_flashed_messages()%}
                         <div class="error-message">
                             <span>{{msg}}</span>

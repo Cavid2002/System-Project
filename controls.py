@@ -36,6 +36,7 @@ def make_session_permanent():
 @login_manger.user_loader
 def load_user(user_id):
     return User.query.filter_by(id = user_id).first()
+    
 
 
 
@@ -55,7 +56,7 @@ def search():
 def foundUserImage():
     user = User.query.filter_by(id = session['searchedUser']).first()
     images = Images.query.filter_by(user_id = user.id)
-    res = make_response(render_template('userMainImg.html',user_info = user,images = images))
+    res = make_response(render_template('user-img.html',user_info = user,images = images))
     return res
 
 
@@ -64,7 +65,7 @@ def foundUserImage():
 def foundUserVideo():
     user = User.query.filter_by(id = session['searchedUser']).first()
     vids = Videos.query.filter_by(user_id = user.id)
-    res = make_response(render_template('userMainVideo.html',user_info = user,vids = vids))
+    res = make_response(render_template('user-video.html',user_info = user,vids = vids))
     return res
 
 
@@ -84,7 +85,7 @@ def recover():
             mail.send(msg)
         else:
             flash("User with this email doesn't exists!")
-    res = make_response(render_template("recoverMail.html",form = rform))
+    res = make_response(render_template("recover-mail.html",form = rform))
     return res
 
 
@@ -139,7 +140,7 @@ def main():
                 flash("Make sure to upload Image file!") 
         return redirect(url_for('main'))
     userImg = Images.query.filter_by(user_id = current_user.id)
-    res = make_response(render_template("myMainImg.html",user_info = current_user,form = formImg,images = userImg))
+    res = make_response(render_template("my-img.html",user_info = current_user,form = formImg,images = userImg))
     return res
 
 
@@ -167,7 +168,7 @@ def videos():
                 flash("Make sure to upload Video file!")
         return redirect(url_for('videos'))
     userVid = Videos.query.filter_by(user_id = current_user.id)
-    res = make_response(render_template("myMainVideos.html",user_info = current_user,form = formVideo,vids = userVid))
+    res = make_response(render_template("my-video.html",user_info = current_user,form = formVideo,vids = userVid))
     return res
 
 

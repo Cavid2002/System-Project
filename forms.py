@@ -35,13 +35,12 @@ class UploadVideo(FlaskForm):
     
 
 class PasswordRecoverForm(FlaskForm):
-    email = EmailField(label="Provide your email for Password recovery:",
-                       validators=[DataRequired()])
+    email = EmailField(validators=[DataRequired()])
 
 
 class NewPasswordForm(FlaskForm):
-    password = PasswordField(label="Enter new password:",validators=[DataRequired()])
-    repassword = PasswordField(label="Confirm password:",validators=[DataRequired()])
+    password = PasswordField(validators=[DataRequired()])
+    repassword = PasswordField(validators=[DataRequired()])
 
 
 class SearchForm(FlaskForm):

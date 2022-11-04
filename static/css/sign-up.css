@@ -139,11 +139,26 @@ main .sign-up-img {
   align-items: center;
 }
 main .sign-up-img img {
-  width: 100%;
+  width: 100%;  
 }
 
 
+.chpass {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.chpass .change-header {
+  font-size: 30px !important;
+}
+.chpass #chPasswordBtn {
+  width: 100%;
+}
 
+#signupBtn {
+  width: 100%;
+}
 
 .error-message{
     width: 100%;
@@ -181,6 +196,9 @@ main .sign-up-img img {
   }
   nav p, nav a {
     font-size: 14px;
+  }
+  .chpass .container {
+    padding: 50px 0;
   }
   .sign-up-main {
     padding: 20px !important;
