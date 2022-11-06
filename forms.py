@@ -23,6 +23,7 @@ class SignUpForm(FlaskForm):
         validators=[DataRequired()])
     birthdate = DateField(label=Markup('<i class="fa-solid inputIcon fa-calendar-days"></i>'),
         validators=[DataRequired()])
+ 
     
 class UploadImage(FlaskForm):
     profile = FileField(label="Change Profile Photo:")
@@ -34,8 +35,10 @@ class UploadVideo(FlaskForm):
     video = FileField(label="Add new Video:")
     
 
+
 class PasswordRecoverForm(FlaskForm):
     email = EmailField(validators=[DataRequired()])
+
 
 
 class NewPasswordForm(FlaskForm):
@@ -43,8 +46,16 @@ class NewPasswordForm(FlaskForm):
     repassword = PasswordField(validators=[DataRequired()])
 
 
+
 class SearchForm(FlaskForm):
     inputdata = StringField(label="Enter the Username:",validators=[DataRequired()])
 
+
 class CommentForm(FlaskForm):
     comment = StringField(validators=[DataRequired()],render_kw={"placeholder": "Enter your comment:"})
+
+
+class ChangePasswordForm(FlaskForm):
+    oldpassword = PasswordField(validators=[DataRequired()])
+    password = PasswordField(validators=[DataRequired()])
+    repassword = PasswordField(validators=[DataRequired()])

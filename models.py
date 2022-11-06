@@ -21,7 +21,7 @@ class Videos(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
     video_path = db.Column(db.String(100))
-
+    comments = db.relationship('Comments',backref = 'videos', lazy = True)
     
     def save(self):
         db.session.add(self)
@@ -40,6 +40,7 @@ class Images(db.Model):
 
 class Comments(db.Model):
     id = db.Column(db.Integer,primary_key = True)
+    video_id = db.Column(db.Integer,db.ForeignKey('videos.id'))
     image_id = db.Column(db.Integer,db.ForeignKey('images.id'))
     user_name = db.Column(db.String(25),nullable = False)
     comment = db.Column(db.Text,nullable = False)

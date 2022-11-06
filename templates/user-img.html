@@ -42,7 +42,7 @@
             <div class="d-flex flex-wrap justify-content-between">
                 {% for img in images%}
                     <div class="user-image my-2">
-                        <a href="{{url_for('commentsection',image_path=img.img_path,username=user_info.username)}}" title="">
+                        <a href="{{url_for('comment_section_img',image_path=img.img_path,username=user_info.username)}}" title="">
                         <img src="{{url_for('static',filename = 'uploads/' + user_info.folder + '/' + img.img_path)}}" alt=""></a>
                     </div>
                 {% endfor %}

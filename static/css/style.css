@@ -97,8 +97,7 @@
     margin: 20px 0;
 }
 
-.comment-img img{
-
+.comment-img img,.comment-img video{
     height: 100%;
     width: 50%;
 }

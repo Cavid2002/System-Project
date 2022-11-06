@@ -96,14 +96,14 @@ def recoverCheck(tk):
         login_user(user)
         session.pop('token')
         session.pop('email')
-        return redirect(url_for('changepass'))
+        return redirect(url_for('recoverpass'))
     return make_response("<h2>Access Denied</h2>",403)
 
 
     
-@app.route("/main-changepass/",methods = ['GET','POST'])
+@app.route("/main-recoverpassword/",methods = ['GET','POST'])
 @login_required
-def changepass():
+def recoverpass():
     repassForm = NewPasswordForm()
     if(repassForm.validate_on_submit()):
         if(repassForm.password.data == repassForm.repassword.data):
@@ -112,8 +112,26 @@ def changepass():
             return redirect(url_for("main"))
         else:
             flash("passwords don't match!")
-    res = make_response(render_template("recpass.html",form = repassForm))
+    res = make_response(render_template("recover-password.html",form = repassForm))
     return res
+
+
+@app.route('/main-changepassword/',methods = ['GET','POST'])
+@login_required
+def changepass():
+    changepassform = ChangePasswordForm()
+    if(changepassform.validate_on_submit()):
+        if(not check_password_hash(current_user.password, changepassform.oldpassword.data)):
+            flash("Wrong user password!")
+        elif(changepassform.password.data != changepassform.repassword.data):
+            flash("Passwords don't match!")
+        else:
+            current_user.password = generate_password_hash(changepassform.password.data)
+            current_user.save()
+            return redirect(url_for('main'))
+    res = make_response(render_template('change-password.html',form = changepassform))
+    return res
+
 
 
 @app.route("/main-images/",methods = ['GET','POST'])
@@ -144,10 +162,10 @@ def main():
     return res
 
 
+
 @app.route("/main-videos/",methods = ['POST','GET'])
 @login_required
 def videos():
-
     formVideo = UploadVideo()
     if(formVideo.validate_on_submit()):
         if(formVideo.profile.data):
@@ -172,6 +190,7 @@ def videos():
     return res
 
 
+
 @app.route("/logout/")
 @login_required
 def logOut():
@@ -194,9 +213,9 @@ def logIn():
     return res
 
 
-@app.route("/comment/<username>/<image_path>",methods = ['GET','POST'])
+@app.route("/comment-image/<username>/<image_path>",methods = ['GET','POST'])
 @login_required
-def commentsection(image_path,username):
+def comment_section_img(image_path,username):
     image = Images.query.filter_by(img_path = image_path).first()
     user = User.query.filter_by(username = username).first()
     if(not user or not image):
@@ -209,11 +228,31 @@ def commentsection(image_path,username):
             comment = cform.comment.data,
             user_name = current_user.username)
         new_comment.save()
-        return redirect(url_for('commentsection',username = username,image_path = image_path))
+        return redirect(url_for('comment_section_img',username = username,image_path = image_path))
     
-    res = make_response(render_template("comment.html",form = cform,img = image_path,folder = user.folder,comments = allcomments))
+    res = make_response(render_template("comment-image.html",form = cform,img = image_path,folder = user.folder,comments = allcomments))
     return res
 
+
+
+@app.route("/comment-video/<username>/<video_path>",methods = ['GET','POST'])
+@login_required
+def comment_section_video(username,video_path):
+    video = Videos.query.filter_by(video_path = video_path).first()
+    user = User.query.filter_by(username = username).first()
+    if(not user or not video):
+        abort(404)
+    allcomments = Comments.query.filter_by(video_id = video.id)
+    cform = CommentForm()
+    if(cform.validate_on_submit()):
+        new_comment = Comments(
+            video_id = video.id,
+            comment = cform.comment.data,
+            user_name = current_user.username)
+        new_comment.save()
+        return redirect(url_for('comment_section_video',username = username,video_path = video_path))
+    res = make_response(render_template("comment-video.html",form = cform,video_path = video_path,folder = user.folder,comments = allcomments))
+    return res
 
 @app.route("/sign-up/",methods = ['GET','POST'])
 def signUp():
