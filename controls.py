@@ -254,6 +254,8 @@ def comment_section_video(username,video_path):
     res = make_response(render_template("comment-video.html",form = cform,video_path = video_path,folder = user.folder,comments = allcomments))
     return res
 
+
+
 @app.route("/sign-up/",methods = ['GET','POST'])
 def signUp():
     signForm = SignUpForm()
