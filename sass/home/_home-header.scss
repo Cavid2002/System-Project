@@ -1,0 +1,116 @@
+nav {
+    background-color: map-get($colors, "mainColor");
+    padding: 0px;
+    @include flex(space-between, flex-start);
+
+    .burgerList {
+        span {
+            margin-left: 10px;
+            display: none;
+        }
+    }
+
+    ul {
+        list-style-type: none;
+
+        li {
+            padding: 15px 30px;
+            cursor: pointer;
+
+            a {
+                color: white;
+            }
+
+            &:hover{
+                background-color: rgb(18, 33, 171)
+            }
+
+        }
+    }
+
+    .nav-search-main {
+        position: relative;
+
+        input {
+            height: 30px;
+            width: 240px;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+            background-color: white;
+            padding-left: 40px;
+            margin-top: 10px;
+            transition: 0.3s all;
+
+            &::placeholder {
+                font-size: 14px;
+            }
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            font-size: 14px;
+            transform: translateY(-10%);
+            color: #828282;
+            cursor: pointer;
+        }
+    }
+
+    .navbar-right {
+        height: 50px;
+        @include flex(flex-end, center);
+        padding: 0 15px;
+        position: relative;
+        width: 20%;
+
+        .profileDropdown {
+            cursor: pointer;
+            @include flex(flex-end, center);
+        }
+
+        .dropdown {
+            position: absolute;
+            right: 0px;
+            top: 53px;
+            display: none;
+
+            .dropdown-list {
+                list-style-type: none;
+                font-size: 16px;
+
+                li {
+                    background-color: map-get($colors, "mainColor");
+                    padding: 15px 30px;
+                    color: white;
+
+                    &:hover {
+                        background-color: white;
+                    }
+
+                    &:hover a {
+                        color: map-get($colors, "mainColor");
+                    }
+                }
+            }
+        }
+
+        .profile {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-image: url(../../img/avatar.jpg);
+            background-position: center;
+            background-size: cover;
+        }
+    }
+}
+
+.active {
+    display: block !important;
+}
+
+i.icon-white {
+    color: white;
+}

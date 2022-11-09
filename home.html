@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home | My Gallery</title>
+    <link rel="stylesheet" href="./css/home.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="navbar-left">
+                <div class="hamburger-lines burger">
+                    <span class="line line1"></span>
+                    <span class="line line2"></span>
+                    <span class="line line3"></span>
+                </div>
+                <ul class="d-flex burgerList">
+                    <li class="logo"><a href="#">Logo</a></li>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-house"><span>Home</span></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-message"><span>Chat</span></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-bell"><span>Notifications</span></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav-search-main">
+                <input type="text" placeholder="Search" id="searchBar" />
+                <label for="searchBar"><i class="fa-solid fa-magnifying-glass search-icon"></i></label>
+            </div>
+            <div class="navbar-right">
+                <!-- <a href="./login.html" class="logout">Log Out</a> -->
+                <div class="profileDropdown" onclick="dropdownOpen()">
+                    <div class="profile"></div>
+                    <i class="icon-white"><span id="dropdownIcon" class="material-icons">arrow_drop_down</span></i>
+                </div>
+                <div class="dropdown">
+                    <ul class="dropdown-list">
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Change Password</a></li>
+                        <li><a href="#">Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main onclick="menusClose()">
+        <div class="main-left">
+            <div class="profile">
+                <div class="profile-img"></div>
+                <h4>Elmir Guluzade</h4>
+                <p>Developer at SP company</p>
+                <div class="hr"></div>
+                <p class="birthdate"><i class="fa-solid fa-map-pin"></i>Azerbaijan</p>
+                <p class="birthdate">
+                    <i class="fas fa-birthday-cake cake"></i>21.03.2003
+                </p>
+                <div class="hr"></div>
+                <a href="#" class="viewProfile">View Your Profile</a>
+            </div>
+            <div class="interests">
+                    <p>Interests</p>
+                    <span class="interest1">Coding</span>
+                    <span class="interest2">Books</span>
+                    <span class="interest3">Films</span>
+                    <span class="interest4">Games</span>
+                    <span class="interest5">Friends</span>
+                    <span class="interest5">Games</span>
+                    <span class="interest5">Friends</span>
+                    <span class="interest5">Food</span>
+                    <span class="interest6">Design</span>
+                    <span class="interest7">Art</span>
+                </div>
+        </div>
+        <!-- <div class="main-middle">
+            <div class="posts">
+                <div class="post">
+                    <div class="post-top">
+                        <div class="post-top-photo"></div>
+                        <p>Username</p>
+                    </div>
+                    <div class="post-main">
+                        <img src="" alt="">
+                    </div>
+                    <div class="post-icons">
+                        <i class="fa-regular fa-heart"></i>
+                        <i class="fa-regular fa-comment"></i>
+                        <i class="fa-regular fa-bookmark"></i>
+                    </div>
+                    <div class="post-likes">
+                        <p></p>
+                    </div>
+                    <div class="post-caption">
+                        <p><span>Username</span>Caption</p>
+                    </div>
+                    <div class="post-comments">
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="main-right"></div>
+    </main>
+
+    <script src="./js/main.js"></script>
+</body>
+
+</html>
