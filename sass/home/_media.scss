@@ -103,6 +103,13 @@
         }
 
         // !Main
+
+        
+    }
+}
+
+@mixin lg {
+    @media (max-width: map-get($breakpoints, "lg")) {
         main{
             flex-direction: column;
 
@@ -119,11 +126,13 @@
                 padding: 0;
                 margin: 0 auto;
             }
-        }
 
-        
+            .main-right{
+                display: none;
+            }
+        } 
     }
-}
+} 
 
 .active {
     left: 0 !important;

@@ -5,6 +5,7 @@ nav {
     position: fixed;
     width: 100%;
     top: 0;
+    z-index: 999;
 
     .burgerList {
         span {
@@ -17,14 +18,15 @@ nav {
         list-style-type: none;
 
         li {
-            padding: 15px 30px;
             cursor: pointer;
 
             a {
+                padding: 15px 30px;
+                display: inline-block;
                 color: white;
             }
 
-            &:hover{
+            &:hover {
                 background-color: rgb(18, 33, 171)
             }
 
@@ -87,6 +89,10 @@ nav {
                     background-color: map-get($colors, "mainColor");
                     padding: 15px 30px;
                     color: white;
+
+                    a{
+                        padding: 0;
+                    }
 
                     &:hover {
                         background-color: white;

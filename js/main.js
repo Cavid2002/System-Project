@@ -6,6 +6,7 @@ const line1 = document.querySelector(".line1");
 const line2 = document.querySelector(".line2");
 const line3 = document.querySelector(".line3");
 const likeBtn = document.querySelectorAll(".like-icon");
+const commentBtn = document.querySelectorAll(".comment-icon");
 
 burger.addEventListener("click", () => {
     line1.classList.toggle("linecross1");
@@ -57,6 +58,14 @@ document.addEventListener("click", (e) => {
             if(className[1] == "fa-bookmark"){
                 item.classList.toggle("bookmarkColor");
             }
+        }
+    }
+});
+
+document.addEventListener("click", (e) => {
+    for (let item of commentBtn) {
+        if (item == e.target) {
+            console.log('first')
         }
     }
 });
