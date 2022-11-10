@@ -82,7 +82,7 @@ def recover():
             session['email'] = em
             session['token'] = token
             msg = Message(f"Email Recovery:",recipients=[em])
-            msg.body = f"Email Recovery token is:http://{ipadd}/recoverinfo/{token} -> Do not share with anyone!\n if it wasn'tfrom cryptography.fernet import Fernet you ignore this message"
+            msg.body = f"Email Recovery token is:http://{ipadd}/recoverinfo/{token} -> Do not share with anyone!\n if it wasn't you ignore this message"
             mail.send(msg)
         else:
             flash("User with this email doesn't exists!")
