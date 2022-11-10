@@ -83,8 +83,9 @@ def recover():
             msg = Message(f"Email Recovery:",recipients=[em])
             msg.body = f"Email Recovery token is:{url_for('recoverCheck',tk = token, _external = True)} -> Do not share with anyone!\n if it wasn't you ignore this message"
             mail.send(msg)
+            flash("Recovery token with instructions was sent to your E-mail!","info-message")
         else:
-            flash("User with this email doesn't exists!")
+            flash("User with this email doesn't exists!","error-message")
     res = make_response(render_template("recover-mail.html",form = rform))
     return res
 
@@ -111,7 +112,7 @@ def recoverpass():
             current_user.save()
             return redirect(url_for("main"))
         else:
-            flash("passwords don't match!")
+            flash("passwords don't match!","error-message")
     res = make_response(render_template("recover-password.html",form = repassForm))
     return res
 
@@ -122,12 +123,13 @@ def changepass():
     changepassform = ChangePasswordForm()
     if(changepassform.validate_on_submit()):
         if(not check_password_hash(current_user.password, changepassform.oldpassword.data)):
-            flash("Wrong user password!")
+            flash("Wrong user password!","error-message")
         elif(changepassform.password.data != changepassform.repassword.data):
-            flash("Passwords don't match!")
+            flash("Passwords don't match!","error-message")
         else:
             current_user.password = generate_password_hash(changepassform.password.data)
             current_user.save()
+            flash("Password was successfully changed!","info-message")
             return redirect(url_for('main'))
     res = make_response(render_template('change-password.html',form = changepassform))
     return res
@@ -155,7 +157,7 @@ def main():
                 new_img = Images(img_path=spiltname[1],user_id=current_user.id)
                 new_img.save()
             except UploadNotAllowed:
-                flash("Make sure to upload Image file!") 
+                flash("Make sure to upload Image file!","error-message") 
         return redirect(url_for('main'))
     userImg = Images.query.filter_by(user_id = current_user.id)
     res = make_response(render_template("my-img.html",user_info = current_user,form = formImg,images = userImg))
@@ -183,7 +185,7 @@ def videos():
                 new_video = Videos(video_path=spiltname[1],user_id=current_user.id)
                 new_video.save()
             except UploadNotAllowed:
-                flash("Make sure to upload Video file!")
+                flash("Make sure to upload Video file!","error-message")
         return redirect(url_for('videos'))
     userVid = Videos.query.filter_by(user_id = current_user.id)
     res = make_response(render_template("my-video.html",user_info = current_user,form = formVideo,vids = userVid))
@@ -195,6 +197,7 @@ def videos():
 @login_required
 def logOut():
     logout_user()
+    flash("You loged out!","info-message")
     return redirect(url_for('logIn'))
 
 
@@ -208,7 +211,7 @@ def logIn():
             login_user(user,remember=logform.remember.data)
             return redirect(url_for("main"))
         else:
-            flash("Invalid Email or Password!")
+            flash("Invalid Email or Password!","error-message")
     res = make_response(render_template("login.html",form = logform))
     return res
 
@@ -264,9 +267,9 @@ def signUp():
             usr_em = User.query.filter_by(email = signForm.email.data).first()
             usr_name = User.query.filter_by(username = signForm.username.data).first()
             if(usr_name):
-                flash("Username is already taken!")
+                flash("Username is already taken!","error-message")
             elif(usr_em):
-                flash("User with this E-mail already exists!")
+                flash("User with this E-mail already exists!","error-message")
             else:
                 folderID = generate_string(20)
                 default_img = "person-icon.png"
@@ -279,9 +282,10 @@ def signUp():
                     folder = folderID
                 )
                 new_user.save()
+                flash("Account successfully created!","info-message")
                 return redirect(url_for("logIn"))
         else:
-            flash("Passwords don't match!")
+            flash("Passwords don't match!","error-message")
     res = make_response(render_template("sign-up.html",form = signForm),200)
     return res
 
