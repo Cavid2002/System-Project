@@ -11,7 +11,7 @@ import os
 
 def create_app():
     app = Flask(__name__)
-    app.config['DEBUG'] = True
+    app.config['DEBUG'] = False
     
     app.config['UPLOADED_IMG_DEST'] = "static/uploads/"
     app.config['UPLOADED_VIDEO_DEST'] = "static/uploads/"

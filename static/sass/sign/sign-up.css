@@ -62,18 +62,15 @@ main .container .sign-up-main h1 {
 }
 main .container .sign-up-main .form-btn {
   padding: 15px 40px;
-  width: 100%;
   border: none;
   background-color: rgb(74, 91, 243);
   border-radius: 10px;
   cursor: pointer;
   color: white;
-  transition: 0.1s all;
+  transition: 0.3s all;
 }
 main .container .sign-up-main .form-btn:hover {
-  background-color: white;
-  color: rgb(74, 91, 243);
-  outline: 1px solid rgb(74, 91, 243);
+  background-color: rgb(42, 60, 221);
 }
 main .container .sign-up-main .form-group {
   margin-bottom: 25px;
@@ -139,44 +136,7 @@ main .sign-up-img {
   align-items: center;
 }
 main .sign-up-img img {
-  width: 100%;  
-}
-.forgetPass{
-  color: rgb(86, 97, 198);
-  margin-top: 15px;
-  display: inline-block;
-}
-
-.chpass {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.chpass .change-header {
-  font-size: 30px !important;
-}
-.chpass #chPasswordBtn {
   width: 100%;
-}
-
-#signupBtn {
-  width: 100%;
-}
-
-.error-message{
-    width: 100%;
-    height: 25px;
-    color: red;
-    text-align: center;
-    margin-top: 15px;
-}
-
-.body{
-  width: 100vw;
-  background-color: #F8F8F8;
-  height: 100vh;
-  
 }
 
 @media (max-width: 992px) {
@@ -200,9 +160,6 @@ main .sign-up-img img {
   nav p, nav a {
     font-size: 14px;
   }
-  .chpass .container {
-    padding: 50px 0;
-  }
   .sign-up-main {
     padding: 20px !important;
   }
@@ -215,10 +172,5 @@ main .sign-up-img img {
   .logContainer {
     padding-top: 40px;
     padding-bottom: 40px;
-  }
-  main .container{
-    width: 80%;
-    padding-top: 30px;
-    padding-bottom: 30px;
   }
 }/*# sourceMappingURL=sign-up.css.map */
