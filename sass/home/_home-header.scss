@@ -2,6 +2,9 @@ nav {
     background-color: map-get($colors, "mainColor");
     padding: 0px;
     @include flex(space-between, flex-start);
+    position: fixed;
+    width: 100%;
+    top: 0;
 
     .burgerList {
         span {
@@ -73,7 +76,7 @@ nav {
         .dropdown {
             position: absolute;
             right: 0px;
-            top: 53px;
+            top: 51px;
             display: none;
 
             .dropdown-list {

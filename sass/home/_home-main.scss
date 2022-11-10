@@ -2,10 +2,12 @@ main {
     background-color: #F5F7F8;
     display: flex;
     padding-top: 20px;
+    margin-top: 50px;
 
     .main-left {
         width: 30%;
         padding-left: 40px;
+        position: fixed;
 
         .profile {
             padding: 0 16px;
@@ -40,13 +42,6 @@ main {
                 .cake {
                     margin-right: 11px;
                 }
-            }
-
-
-            .hr {
-                height: 1px;
-                background-color: #EEEEEE;
-                margin: 15px 0;
             }
 
             .profile-img {
@@ -115,13 +110,117 @@ main {
         }
     }
 
-    .main-middle{
-        width: 50%;
+    .main-middle {
+        width: 45%;
         padding: 0 20px;
-    }
+        margin-left: 30%;
+
+        .posts {
+            
+            .post {
+                border-radius: 5px;
+                border: 1px solid rgb(219, 219, 219);
+                background-color: white;
+                margin-bottom: 20px;
     
-    .posts{
-        border-radius: 5px;
-        border: 1px solid rgb(219, 219, 219);
+                .post-top {
+                    padding: 0 20px;
+                    padding-top: 10px;
+                    @include flex(flex-start, center);
+    
+                    .post-top-photo {
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                        background-image: url(../../img/avatar.jpg);
+                        background-position: center;
+                        background-size: cover;
+                        margin-right: 10px;
+                    }
+    
+                    p {
+                        font-weight: 600;
+                        font-size: 15px;
+                    }
+                }
+    
+                .post-main {
+                    background-image: url(../../img/goygol.jpg);
+                    background-position: center;
+                    height: 300px;
+                    background-size: cover;
+                }
+    
+                .post-icons {
+                    padding: 0 15px;
+                    padding-right: 4px;
+    
+                    @include flex(space-between, center);
+    
+                    i {
+                        font-size: 24px;
+                        padding-top: 10px;
+                    }
+    
+                    .like-icon {
+                        margin-right: 8px;
+                    }
+    
+                    .bookmark-icon {
+                        padding-top: 8px;
+                    }
+                }
+    
+                .post-likes {
+                    padding: 0 15px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    padding-top: 7px;
+    
+                    span {
+                        font-family: 'Poppins', sans-serif;
+                        font-weight: 600;
+                    }
+                }
+    
+                .post-caption {
+                    padding: 8px 15px;
+    
+                    p {
+                        font-size: 15px;
+                    }
+    
+                    span {
+                        margin-right: 6px;
+                        font-size: 16px;
+                        font-weight: 600;
+                    }
+                }
+    
+                .post-time {
+                    padding: 0 15px;
+                    padding-bottom: 10px;
+    
+                    p {
+                        color: grey;
+                        font-size: 14px;
+                    }
+                }
+    
+                .likeColor:before{
+                    color: rgb(219, 0, 0);
+                }
+
+                .bookmarkColor:before{
+                    color: rgb(34, 48, 174);
+                }
+            }
+        }
     }
+
+    .main-right{
+        width: 25%;
+
+    }
+
 }

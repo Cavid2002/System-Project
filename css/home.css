@@ -2,7 +2,19 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.hr {
+  height: 1px;
+  background-color: #EEEEEE;
+  margin: 15px 0;
+}
+
+.hr-middle {
+  height: 1px;
+  background-color: #EEEEEE;
+  margin-top: 10px;
 }
 
 .d-flex {
@@ -19,6 +31,9 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  position: fixed;
+  width: 100%;
+  top: 0;
 }
 nav .burgerList span {
   margin-left: 10px;
@@ -87,7 +102,7 @@ nav .navbar-right .profileDropdown {
 nav .navbar-right .dropdown {
   position: absolute;
   right: 0px;
-  top: 53px;
+  top: 51px;
   display: none;
 }
 nav .navbar-right .dropdown .dropdown-list {
@@ -126,10 +141,12 @@ main {
   background-color: #F5F7F8;
   display: flex;
   padding-top: 20px;
+  margin-top: 50px;
 }
 main .main-left {
   width: 30%;
   padding-left: 40px;
+  position: fixed;
 }
 main .main-left .profile {
   padding: 0 16px;
@@ -159,11 +176,6 @@ main .main-left .profile .birthdate i {
 }
 main .main-left .profile .birthdate .cake {
   margin-right: 11px;
-}
-main .main-left .profile .hr {
-  height: 1px;
-  background-color: #EEEEEE;
-  margin: 15px 0;
 }
 main .main-left .profile .profile-img {
   width: 100px;
@@ -218,12 +230,96 @@ main .main-left .interests .interest7 {
   background-color: #dfe5e8;
 }
 main .main-middle {
-  width: 50%;
+  width: 45%;
   padding: 0 20px;
+  margin-left: 30%;
 }
-main .posts {
+main .main-middle .posts .post {
   border-radius: 5px;
   border: 1px solid rgb(219, 219, 219);
+  background-color: white;
+  margin-bottom: 20px;
+}
+main .main-middle .posts .post .post-top {
+  padding: 0 20px;
+  padding-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+main .main-middle .posts .post .post-top .post-top-photo {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-image: url(../../img/avatar.jpg);
+  background-position: center;
+  background-size: cover;
+  margin-right: 10px;
+}
+main .main-middle .posts .post .post-top p {
+  font-weight: 600;
+  font-size: 15px;
+}
+main .main-middle .posts .post .post-main {
+  background-image: url(../../img/goygol.jpg);
+  background-position: center;
+  height: 300px;
+  background-size: cover;
+}
+main .main-middle .posts .post .post-icons {
+  padding: 0 15px;
+  padding-right: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+main .main-middle .posts .post .post-icons i {
+  font-size: 24px;
+  padding-top: 10px;
+}
+main .main-middle .posts .post .post-icons .like-icon {
+  margin-right: 8px;
+}
+main .main-middle .posts .post .post-icons .bookmark-icon {
+  padding-top: 8px;
+}
+main .main-middle .posts .post .post-likes {
+  padding: 0 15px;
+  font-size: 14px;
+  font-weight: 500;
+  padding-top: 7px;
+}
+main .main-middle .posts .post .post-likes span {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+}
+main .main-middle .posts .post .post-caption {
+  padding: 8px 15px;
+}
+main .main-middle .posts .post .post-caption p {
+  font-size: 15px;
+}
+main .main-middle .posts .post .post-caption span {
+  margin-right: 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+main .main-middle .posts .post .post-time {
+  padding: 0 15px;
+  padding-bottom: 10px;
+}
+main .main-middle .posts .post .post-time p {
+  color: grey;
+  font-size: 14px;
+}
+main .main-middle .posts .post .likeColor:before {
+  color: rgb(219, 0, 0);
+}
+main .main-middle .posts .post .bookmarkColor:before {
+  color: rgb(34, 48, 174);
+}
+main .main-right {
+  width: 25%;
 }
 
 .active {
@@ -258,7 +354,7 @@ main .posts {
   nav .nav-search-main input {
     width: 200px;
   }
-  .burgerList {
+  nav .burgerList {
     position: absolute;
     flex-direction: column;
     width: 35%;
@@ -267,12 +363,12 @@ main .posts {
     left: -200px;
     top: 50px;
   }
-  .burgerList span {
+  nav .burgerList span {
     display: inline-block !important;
     margin-left: 10px;
     font-weight: 500;
   }
-  .hamburger-lines {
+  nav .hamburger-lines {
     cursor: pointer;
     display: block;
     height: 18px;
@@ -285,29 +381,44 @@ main .posts {
     flex-direction: column;
     justify-content: space-between;
   }
-  .hamburger-lines .line {
+  nav .hamburger-lines .line {
     display: block;
     height: 4px;
     width: 100%;
     border-radius: 10px;
     background: white;
   }
-  .linecross1 {
+  nav .linecross1 {
     transform: translateY(7px) rotate(-45deg);
   }
-  .linecross2 {
+  nav .linecross2 {
     opacity: 0;
   }
-  .linecross3 {
+  nav .linecross3 {
     transform: translateY(-7px) rotate(45deg);
   }
-  .hamburger-lines .line1 {
+  nav .hamburger-lines .line1 {
     transition: transform 0.4s ease-in-out;
   }
-  .hamburger-lines .line2 {
+  nav .hamburger-lines .line2 {
     transition: opacity 0.6s;
   }
-  .hamburger-lines .line3 {
+  nav .hamburger-lines .line3 {
     transition: transform 0.4s ease-in-out;
+  }
+  main {
+    flex-direction: column;
+  }
+  main .main-left {
+    width: 90%;
+    position: static;
+    padding: 0;
+    margin: 0 auto;
+    margin-bottom: 20px;
+  }
+  main .main-middle {
+    width: 90%;
+    padding: 0;
+    margin: 0 auto;
   }
 }/*# sourceMappingURL=home.css.map */

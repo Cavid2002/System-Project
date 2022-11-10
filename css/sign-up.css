@@ -2,7 +2,19 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.hr {
+  height: 1px;
+  background-color: #EEEEEE;
+  margin: 15px 0;
+}
+
+.hr-middle {
+  height: 1px;
+  background-color: #EEEEEE;
+  margin-top: 10px;
 }
 
 .d-flex {
