@@ -5,6 +5,8 @@ const burgerList = document.querySelector(".burgerList");
 const line1 = document.querySelector(".line1");
 const line2 = document.querySelector(".line2");
 const line3 = document.querySelector(".line3");
+const likeBtn = document.querySelectorAll(".like-icon");
+const commentBtn = document.querySelectorAll(".comment-icon");
 
 
 burger.addEventListener("click", () => {
@@ -45,3 +47,26 @@ const menusClose = () => {
         burgerList.classList.remove("active");
     }
 };
+
+document.addEventListener("click", (e) => {
+    for (let item of likeBtn) {
+        if (item == e.target) {
+            const className = item.className.split(' ');
+            item.classList.toggle("fa-solid");
+            if(className[1] == "fa-heart"){
+                item.classList.toggle("likeColor");
+            }
+            if(className[1] == "fa-bookmark"){
+                item.classList.toggle("bookmarkColor");
+            }
+        }
+    }
+});
+
+document.addEventListener("click", (e) => {
+    for (let item of commentBtn) {
+        if (item == e.target) {
+            console.log('first')
+        }
+    }
+});

@@ -6,7 +6,7 @@ from flask_mail import Message
 from app import app,photos,login_manger,video,mail
 from flask_uploads import UploadNotAllowed
 from uuid import uuid4
-from datetime import timedelta
+from datetime import timedelta,datetime
 from os import remove,urandom
 from string import ascii_letters,digits
 from random import choice
@@ -154,7 +154,7 @@ def main():
             try:
                 file = photos.save(storage=formImg.img.data,folder=current_user.folder,name=generate_string()+".")
                 spiltname = file.split("/")
-                new_img = Images(img_path=spiltname[1],user_id=current_user.id)
+                new_img = Images(img_path=spiltname[1],user_id=current_user.id,time_added=datetime.utcnow())
                 new_img.save()
             except UploadNotAllowed:
                 flash("Make sure to upload Image file!","error-message") 
@@ -163,6 +163,14 @@ def main():
     res = make_response(render_template("my-img.html",user_info = current_user,form = formImg,images = userImg))
     return res
 
+@app.route('/home-images/',methods=['POST','GET'])
+@login_required
+def homepage():
+    if('searchedUser' in session):
+        session.pop('searchedUser')
+    userImg = Images.query.filter_by(user_id = current_user.id)
+    res = make_response(render_template("home.html",user_info = current_user,images = userImg))
+    return res
 
 
 @app.route("/main-videos/",methods = ['POST','GET'])
@@ -182,7 +190,7 @@ def videos():
             try:
                 file = video.save(storage = formVideo.video.data,folder=current_user.folder,name=generate_string()+".")
                 spiltname = file.split("/")
-                new_video = Videos(video_path=spiltname[1],user_id=current_user.id)
+                new_video = Videos(video_path=spiltname[1],user_id=current_user.id,time_added=datetime.utcnow())
                 new_video.save()
             except UploadNotAllowed:
                 flash("Make sure to upload Video file!","error-message")
@@ -228,6 +236,7 @@ def comment_section_img(image_path,username):
     if(cform.validate_on_submit()):
         new_comment = Comments(
             image_id = image.id,
+            time_added = datetime.utcnow(),
             comment = cform.comment.data,
             user_name = current_user.username)
         new_comment.save()
@@ -251,6 +260,7 @@ def comment_section_video(username,video_path):
         new_comment = Comments(
             video_id = video.id,
             comment = cform.comment.data,
+            time_added = datetime.utcnow(),
             user_name = current_user.username)
         new_comment.save()
         return redirect(url_for('comment_section_video',username = username,video_path = video_path))

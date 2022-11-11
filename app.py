@@ -11,7 +11,7 @@ import os
 
 def create_app():
     app = Flask(__name__)
-    app.config['DEBUG'] = False
+    app.config['DEBUG'] = True
     
     app.config['UPLOADED_IMG_DEST'] = "static/uploads/"
     app.config['UPLOADED_VIDEO_DEST'] = "static/uploads/"
@@ -39,6 +39,7 @@ app = create_app()
 login_manger = LoginManager()
 login_manger.login_view = "logIn"
 login_manger.login_message = "You are not logged in!"
+login_manger.login_message_category = "error-message"
 login_manger.session_protection = "strong"
 login_manger.init_app(app)
 
