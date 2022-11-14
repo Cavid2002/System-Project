@@ -86,12 +86,14 @@ nav {
                 font-size: 16px;
 
                 li {
-                    background-color: map-get($colors, "mainColor");
-                    padding: 15px 30px;
                     color: white;
-
-                    a{
-                        padding: 0;
+                    background-color: map-get($colors, "mainColor");
+                    cursor: default;
+                    
+                    a {
+                        width: 100%;
+                        display: inline-block;
+                        padding: 15px 30px;
                     }
 
                     &:hover {

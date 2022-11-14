@@ -149,6 +149,118 @@ main {
     }
 }
 
-#signupBtn{
+#signupBtn {
     width: 100%;
+}
+
+.comment-body {
+    background-color: #F8F8F8;
+    height: 100vh;
+    @include flex(center, center);
+
+    .comment-section {
+        background-color: white;
+        width: 70%;
+        height: 70vh;
+        margin: 0 auto;
+        border-radius: 10px;
+        box-shadow: 5px 5px 16px 5px rgba(0, 0, 0, 0.05);
+
+        .comment-image {
+            width: 50%;
+            position: relative;
+
+            img {
+                border-radius: 10px 0 0 10px;
+            }
+
+            .arrow-icon{
+                position: absolute;
+                left: 10px;
+                top: 10px;
+                color: white;
+                font-size: 20px;
+                padding: 6px;
+                cursor: pointer;
+            }
+        }
+
+        .comment-main {
+            width: 50%;
+            overflow-y: auto;
+            position: relative;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .comments-top{
+                .all-comments {
+                    padding: 0 20px;
+                    @include flex(flex-start, center);
+                    width: 100%;
+    
+                    .comment-top-photo {
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                        background-image: url(../../img/avatar.jpg);
+                        background-position: center;
+                        background-size: cover;
+                        margin-right: 10px;
+                    }
+    
+                    p {
+                        font-weight: 600;
+                        font-size: 12px;
+                    }
+    
+                    .comment-content {
+                        font-weight: 400;
+                        font-size: 13px;
+                    }
+
+                    &:first-child {
+                        margin-top: 10px;
+                    }
+
+                    &:last-child {
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+
+
+            .comment-input {
+                position: sticky;
+                bottom: 0;
+                width: 100%;
+
+                input {
+                    width: 100%;
+                    height: 40px;
+                    outline: 0;
+                    padding-left: 20px;
+                    border: none;
+                    border-top: 1px solid #EEEEEE;
+                }
+
+                button {
+                    position: absolute;
+                    right: 10px;
+                    bottom: 10px;
+                    border: none;
+                    background: none;
+                    color: map-get($colors, "mainColor");
+                    font-size: 16px;
+                    cursor: pointer;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
+
+.hr-comment {
+    margin: 8px;
 }

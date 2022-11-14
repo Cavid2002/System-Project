@@ -112,12 +112,14 @@ nav .navbar-right .dropdown .dropdown-list {
   font-size: 16px;
 }
 nav .navbar-right .dropdown .dropdown-list li {
-  background-color: rgb(86, 97, 198);
-  padding: 15px 30px;
   color: white;
+  background-color: rgb(86, 97, 198);
+  cursor: default;
 }
 nav .navbar-right .dropdown .dropdown-list li a {
-  padding: 0;
+  width: 100%;
+  display: inline-block;
+  padding: 15px 30px;
 }
 nav .navbar-right .dropdown .dropdown-list li:hover {
   background-color: white;
@@ -275,12 +277,10 @@ main .main-middle .posts .post .post-icons {
 main .main-middle .posts .post .post-icons i {
   font-size: 24px;
   padding-top: 10px;
+  cursor: pointer;
 }
 main .main-middle .posts .post .post-icons .like-icon {
   margin-right: 8px;
-}
-main .main-middle .posts .post .post-icons .bookmark-icon {
-  padding-top: 8px;
 }
 main .main-middle .posts .post .post-likes {
   padding: 0 15px;
