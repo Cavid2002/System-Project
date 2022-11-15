@@ -14,7 +14,25 @@
             }
             
         }
+
         .form-checkbox-right {
+            width: 100% !important;
+        }
+
+        .comment-section{
+            flex-direction: column;
+            width: 90%;
+
+        }
+        .comment-image{
+            width: 100% !important;
+            
+            img{
+                display: none;
+            }
+        }
+
+        .comment-main {
             width: 100% !important;
         }
     }

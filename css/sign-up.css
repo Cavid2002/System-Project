@@ -295,6 +295,19 @@ main .sign-up-img img {
   .form-checkbox-right {
     width: 100% !important;
   }
+  .comment-section {
+    flex-direction: column;
+    width: 90%;
+  }
+  .comment-image {
+    width: 100% !important;
+  }
+  .comment-image img {
+    display: none;
+  }
+  .comment-main {
+    width: 100% !important;
+  }
 }
 @media (max-width: 576px) {
   nav h1 {

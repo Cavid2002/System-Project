@@ -37,6 +37,7 @@ const toggleVisibilitynew = () => {
   let icon = document.getElementById('iconch');
   passwordEye(password,icon)
 }
+
 const toggleVisibilitynewRe = () => {
   let password = document.getElementById('newrepassword');
   let icon = document.getElementById('iconrech');
