@@ -48,11 +48,21 @@ const menusClose = () => {
     }
 };
 
+let likeText;
 document.addEventListener("click", (e) => {
-    for (let item of likeBtn) {
-        if (item == e.target) {
-            item.classList.toggle("fa-solid");
-            item.classList.toggle("likeColor");
+    for (let item = 0; item < likeBtn.length; item++) {
+        if (likeBtn[item] == e.target) {
+            likeBtn[item].classList.toggle("fa-solid");
+            likeBtn[item].classList.toggle("likeColor");
+            if (likeBtn[item].classList.contains("fa-solid")) {
+                const p = document.createElement('p');
+                likeBtn[item].classList.add('countLike');
+                p.innerHTML = `Liked by 1 users`;
+                likeText = p;
+                likeCount[item].appendChild(p)
+            } else {
+                likeCount[item].removeChild(likeText);
+            }
         }
     }
 });
@@ -64,5 +74,3 @@ document.addEventListener("click", (e) => {
         }
     }
 });
-
-
