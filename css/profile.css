@@ -1,0 +1,317 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.hr {
+  height: 1px;
+  background-color: #EEEEEE;
+  margin: 15px 0;
+}
+
+.hr-middle {
+  height: 1px;
+  background-color: #EEEEEE;
+  margin-top: 10px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+a {
+  text-decoration: none;
+}
+
+nav {
+  background-color: rgb(86, 97, 198);
+  padding: 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 999;
+}
+nav .burgerList span {
+  margin-left: 10px;
+  display: none;
+}
+nav ul {
+  list-style-type: none;
+}
+nav ul li {
+  cursor: pointer;
+}
+nav ul li a {
+  padding: 15px 30px;
+  display: inline-block;
+  color: white;
+}
+nav ul li:hover {
+  background-color: rgb(18, 33, 171);
+}
+nav .nav-search-main {
+  position: relative;
+}
+nav .nav-search-main input {
+  height: 30px;
+  width: 240px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  background-color: white;
+  padding-left: 40px;
+  margin-top: 10px;
+  transition: 0.3s all;
+}
+nav .nav-search-main input::-moz-placeholder {
+  font-size: 14px;
+}
+nav .nav-search-main input:-ms-input-placeholder {
+  font-size: 14px;
+}
+nav .nav-search-main input::placeholder {
+  font-size: 14px;
+}
+nav .nav-search-main .search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  font-size: 14px;
+  transform: translateY(-10%);
+  color: #828282;
+  cursor: pointer;
+}
+nav .navbar-right {
+  height: 50px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 15px;
+  position: relative;
+  width: 20%;
+}
+nav .navbar-right .profileDropdown {
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+nav .navbar-right .dropdown {
+  position: absolute;
+  right: 0px;
+  top: 51px;
+  display: none;
+}
+nav .navbar-right .dropdown .dropdown-list {
+  list-style-type: none;
+  font-size: 16px;
+}
+nav .navbar-right .dropdown .dropdown-list li {
+  color: white;
+  background-color: rgb(86, 97, 198);
+  cursor: default;
+}
+nav .navbar-right .dropdown .dropdown-list li a {
+  width: 100%;
+  display: inline-block;
+  padding: 15px 30px;
+}
+nav .navbar-right .dropdown .dropdown-list li:hover {
+  background-color: white;
+}
+nav .navbar-right .dropdown .dropdown-list li:hover a {
+  color: rgb(86, 97, 198);
+}
+nav .navbar-right .profile {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-image: url(../../img/avatar.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+.active {
+  display: block !important;
+}
+
+i.icon-white {
+  color: white;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 51px;
+  background-color: #F5F7F8;
+}
+main .container {
+  padding-top: 20px;
+  width: 70%;
+  margin: 0 auto;
+  background: white;
+}
+main .container .profile-top {
+  padding: 20px 0 40px 0;
+  margin-left: 20px;
+  margin-right: 20px;
+  border-bottom: 1px solid rgb(229, 229, 229);
+  margin-bottom: 20px;
+}
+main .container .profile-top .profile-photo {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+main .container .profile-top .profile-photo img {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+}
+main .container .profile-top .profile-content {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+main .container .profile-top .profile-content p {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
+}
+main .container .profile-top .profile-content button {
+  background: rgb(86, 97, 198);
+  padding: 8px 15px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+main .container .profile-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+}
+main .container .profile-bottom .profile-images {
+  width: 30%;
+  height: 250px;
+  margin: 0 1.66%;
+  margin-bottom: 25px;
+  position: relative;
+}
+main .container .profile-bottom .profile-images i {
+  opacity: 0;
+}
+main .container .profile-bottom .profile-images:hover i {
+  opacity: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  font-size: 20px;
+}
+main .container .profile-bottom .profile-images:hover img {
+  opacity: 0.3;
+  cursor: pointer;
+}
+main .container .profile-bottom .profile-images img {
+  box-shadow: 5px 5px 20px 5px rgba(0, 0, 0, 0.1);
+}
+
+.active {
+  left: 0 !important;
+}
+
+@media (max-width: 576px) {
+  nav ul li {
+    font-size: 14px;
+  }
+  nav ul li:hover {
+    background-color: white;
+  }
+  nav ul li:hover i {
+    color: rgb(86, 97, 198) !important;
+  }
+  nav ul li:hover span {
+    color: rgb(86, 97, 198) !important;
+  }
+  nav ul .logo {
+    display: none;
+  }
+  nav .navbar-right {
+    width: 30%;
+  }
+  nav .dropdown {
+    top: 50px !important;
+  }
+  nav .nav-search-main {
+    position: relative;
+  }
+  nav .nav-search-main input {
+    width: 200px;
+  }
+  nav .burgerList {
+    position: absolute;
+    flex-direction: column;
+    width: 35%;
+    background: rgb(86, 97, 198);
+    position: absolute;
+    left: -200px;
+    top: 50px;
+  }
+  nav .burgerList span {
+    display: inline-block !important;
+    margin-left: 10px;
+    font-weight: 500;
+  }
+  nav .hamburger-lines {
+    cursor: pointer;
+    display: block;
+    height: 18px;
+    width: 25px;
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  nav .hamburger-lines .line {
+    display: block;
+    height: 4px;
+    width: 100%;
+    border-radius: 10px;
+    background: white;
+  }
+  nav .linecross1 {
+    transform: translateY(7px) rotate(-45deg);
+  }
+  nav .linecross2 {
+    opacity: 0;
+  }
+  nav .linecross3 {
+    transform: translateY(-7px) rotate(45deg);
+  }
+  nav .hamburger-lines .line1 {
+    transition: transform 0.4s ease-in-out;
+  }
+  nav .hamburger-lines .line2 {
+    transition: opacity 0.6s;
+  }
+  nav .hamburger-lines .line3 {
+    transition: transform 0.4s ease-in-out;
+  }
+}/*# sourceMappingURL=profile.css.map */

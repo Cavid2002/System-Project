@@ -74,3 +74,11 @@ document.addEventListener("click", (e) => {
         }
     }
 });
+
+document.addEventListener("click", (e) => {
+    for (let item of commentBtn) {
+        if (item == e.target) {
+            location.href = "../comment.html"
+        }
+    }
+});

@@ -1,0 +1,96 @@
+main {
+    @include flex(center, center);
+    margin-top: 51px;
+    background-color: #F5F7F8;
+    
+    .container {
+        padding-top: 20px;
+        width: 70%;
+        margin: 0 auto;
+        background: white;
+
+        .profile-top {
+            padding: 20px 0 40px 0;
+            margin-left: 20px;
+            margin-right: 20px;
+            border-bottom: 1px solid rgb(229, 229, 229);
+            margin-bottom: 20px;
+    
+            .profile-photo{
+                width: 30%;
+                @include flex(center, center);
+    
+                img {
+                    border-radius: 50%;
+                    width: 150px;
+                    height: 150px;
+                }
+            }
+    
+            .profile-content{
+                width: 50%;
+                @include flex(center, center);
+                flex-direction: column;
+    
+                p{
+                    font-size: 24px;
+                    font-weight: 700;
+                    text-align: center;
+                    margin-bottom: 30px;
+                }
+    
+                button{
+                    background: map-get($colors, "mainColor");
+                    padding: 8px 15px;
+                    border-radius: 10px;
+                    outline: none;
+                    border: none;
+                    color: white;
+                    font-weight: 700;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .profile-bottom{
+            display: flex;
+            flex-wrap: wrap;
+            position: relative;
+
+            .profile-images{
+                width: 30%;
+                height: 250px;
+                margin: 0 1.66%;
+                margin-bottom: 25px;
+                position: relative;
+
+                i{
+                    opacity: 0;
+                }
+        
+        
+                &:hover i{
+                    opacity: 1;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    cursor: pointer;
+                    font-size: 20px;
+                }
+
+                &:hover img{
+                    opacity: 0.3;
+                    cursor: pointer;
+                }
+
+                img{
+                    box-shadow: 5px 5px 20px 5px rgba(0, 0, 0, 0.1);
+                }
+            }
+        }
+    }
+
+
+
+}

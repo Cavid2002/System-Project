@@ -1,0 +1,7 @@
+@import '../variables/reset';
+@import '../variables/mixin';
+@import '../variables/map';
+@import "../home/home-header";
+@import "./profile-main";
+@import "./media";
+@include xs;
