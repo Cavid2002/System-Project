@@ -6,6 +6,7 @@ const line1 = document.querySelector(".line1");
 const line2 = document.querySelector(".line2");
 const line3 = document.querySelector(".line3");
 const likeBtn = document.querySelectorAll(".like-icon");
+const likeCount = document.querySelectorAll(".post-likes");
 const commentBtn = document.querySelectorAll(".comment-icon");
 
 
@@ -63,10 +64,29 @@ document.addEventListener("click", (e) => {
     }
 });
 
+// document.addEventListener("click", (e) => {
+//     for (let item of commentBtn) {
+//         if (item == e.target) {
+//             console.log('first')
+//         }
+//     }
+// });
+
+let likeText;
 document.addEventListener("click", (e) => {
-    for (let item of commentBtn) {
-        if (item == e.target) {
-            console.log('first')
+    for (let item = 0; item < likeBtn.length; item++) {
+        if (likeBtn[item] == e.target) {
+            likeBtn[item].classList.toggle("fa-solid");
+            likeBtn[item].classList.toggle("likeColor");
+            if (likeBtn[item].classList.contains("fa-solid")) {
+                const p = document.createElement('p');
+                likeBtn[item].classList.add('countLike');
+                p.innerHTML = `Liked by 1 users`;
+                likeText = p;
+                likeCount[item].appendChild(p)
+            } else {
+                likeCount[item].removeChild(likeText);
+            }
         }
     }
 });

@@ -160,7 +160,7 @@ def main():
                 flash("Make sure to upload Image file!","error-message") 
         return redirect(url_for('main'))
     userImg = Images.query.filter_by(user_id = current_user.id)
-    res = make_response(render_template("my-img.html",user_info = current_user,form = formImg,images = userImg))
+    res = make_response(render_template("profile.html",user_info = current_user,form = formImg,images = userImg))
     return res
 
 @app.route('/home-images/',methods=['POST','GET'])
