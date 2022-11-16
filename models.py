@@ -9,41 +9,30 @@ class User(db.Model,UserMixin):
     birthdate = db.Column(db.DateTime)
     profile = db.Column(db.String(100))
     folder = db.Column(db.String(100))
-    img = db.relationship('Images', backref='user', lazy=True)
-    video = db.relationship('Videos',backref='user', lazy=True)
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-
-class Videos(db.Model):
-    id = db.Column(db.Integer,primary_key = True)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
-    video_path = db.Column(db.String(100))
-    time_added = db.Column(db.DateTime)
-    comments = db.relationship('Comments',backref = 'videos', lazy = True)
+    media = db.relationship('Media', backref='user', lazy=True)
     
     def save(self):
         db.session.add(self)
         db.session.commit()
 
 
-class Images(db.Model):
+
+class Media(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
-    img_path = db.Column(db.String(100))
+    media_path = db.Column(db.String(100))
     time_added = db.Column(db.DateTime)
-    comments = db.relationship('Comments',backref = 'images', lazy = True)
+    comments = db.relationship('Comments',backref = 'media', lazy = True)
     
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+
 
 class Comments(db.Model):
     id = db.Column(db.Integer,primary_key = True)
-    video_id = db.Column(db.Integer,db.ForeignKey('videos.id'))
-    image_id = db.Column(db.Integer,db.ForeignKey('images.id'))
+    media_id = db.Column(db.Integer,db.ForeignKey('media.id'))
     time_added = db.Column(db.DateTime)
     user_name = db.Column(db.String(25),nullable = False)
     comment = db.Column(db.Text,nullable = False)
@@ -51,6 +40,7 @@ class Comments(db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
+
 
 db.create_all()
 

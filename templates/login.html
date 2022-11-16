@@ -23,7 +23,7 @@
         <!-- <img> -->
         <div class="nav-right d-flex">
           <p>Already Not Member?</p>
-          <a href="{{url_for('signUp')}}">Sign Up</a>
+          <a href="{{url_for('sign_up')}}">Sign Up</a>
         </div>
       </nav>
     </header> 
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <input type="submit" value="Log In" class="form-btn" id="loginBtn"/>
-                    <p><a class="forgetPass" href="{{url_for('recover')}}">Forgot password?</a></p>
+                    <p><a class="forgetPass" href="{{url_for('recover_mail')}}">Forgot password?</a></p>
                     {%for cat,msg in get_flashed_messages(True)%}
                         <div class="{{cat}}">
                             <span>{{msg}}</span>

@@ -24,16 +24,10 @@ class SignUpForm(FlaskForm):
     birthdate = DateField(label=Markup('<i class="fa-solid inputIcon fa-calendar-days"></i>'),
         validators=[DataRequired()])
  
-    
-class UploadImage(FlaskForm):
-    profile = FileField(label="Change Profile Photo:")
-    img = FileField(label="Add new photo:")
 
-
-class UploadVideo(FlaskForm):
-    profile = FileField(label="Change Profile Photo:")
-    video = FileField(label="Add new Video:")
-    
+class UploadMediaForm(FlaskForm):
+    file = FileField(label="Add new file!")
+    profile = FileField(label="Change Profile photo")
 
 
 class PasswordRecoverForm(FlaskForm):

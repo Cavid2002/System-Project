@@ -13,9 +13,9 @@ def create_app():
     app = Flask(__name__)
     app.config['DEBUG'] = True
     
-    app.config['UPLOADED_IMG_DEST'] = "static/uploads/"
-    app.config['UPLOADED_VIDEO_DEST'] = "static/uploads/"
-    
+    app.config['UPLOADED_PROFILE_DEST'] = "static/uploads/"
+    app.config['UPLOADED_GALERY_DEST'] = "static/uploads/"
+
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
@@ -37,7 +37,7 @@ def create_app():
 app = create_app()
 
 login_manger = LoginManager()
-login_manger.login_view = "logIn"
+login_manger.login_view = "log_in"
 login_manger.login_message = "You are not logged in!"
 login_manger.login_message_category = "error-message"
 login_manger.session_protection = "strong"
@@ -50,10 +50,10 @@ migrate = Migrate(app,db)
 
 mail = Mail(app)
 
-video = UploadSet("video",('mov','mp4'))
-photos = UploadSet("img", IMAGES)
-configure_uploads(app, video)
-configure_uploads(app,photos)
+profile = UploadSet("profile",IMAGES)
+media = UploadSet("galery", ('mov','mp4','jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'webp'))
+configure_uploads(app, media)
+configure_uploads(app, profile)
 
 
 

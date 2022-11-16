@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
 from flask_mail import Message
-from app import app,photos,login_manger,video,mail
+from app import app,login_manger,mail,media,profile
 from flask_uploads import UploadNotAllowed
 from uuid import uuid4
 from datetime import timedelta,datetime
@@ -40,289 +40,148 @@ def load_user(user_id):
 
 
 
-@app.route('/main/search',methods = ['GET','POST'])
-def search():
-    sform = SearchForm()
+@app.route('/sign-up/',methods = ['POST','GET'])
+def sign_up():
+    sform = SignUpForm()
     if(sform.validate_on_submit()):
-        user = User.query.filter_by(username = sform.inputdata.data).first()
-        session["searchedUser"] = user.id
-        return redirect(url_for('foundUserImage'))
-    res = make_response(render_template("search.html",form = sform))
-    return res
-
-
-@app.route('/user-images/')
-@login_required
-def foundUserImage():
-    user = User.query.filter_by(id = session['searchedUser']).first()
-    images = Images.query.filter_by(user_id = user.id)
-    res = make_response(render_template('user-img.html',user_info = user,images = images))
-    return res
-
-
-@app.route('/user-videos/')
-@login_required
-def foundUserVideo():
-    user = User.query.filter_by(id = session['searchedUser']).first()
-    vids = Videos.query.filter_by(user_id = user.id)
-    res = make_response(render_template('user-video.html',user_info = user,vids = vids))
-    return res
-
-
-
-@app.route("/recover/",methods = ['GET','POST'])
-def recover():
-    rform = PasswordRecoverForm()
-    if(rform.validate_on_submit()):
-        em = rform.email.data
-        user = User.query.filter_by(email = em).first()
-        if(user):
-            token = urandom(20).hex()
-            session['email'] = em
-            session['token'] = token
-            msg = Message(f"Email Recovery:",recipients=[em])
-            msg.body = f"Email Recovery token is:{url_for('recoverCheck',tk = token, _external = True)} -> Do not share with anyone!\n if it wasn't you ignore this message"
-            mail.send(msg)
-            flash("Recovery token with instructions was sent to your E-mail!","info-message")
+        if(sform.password.data != sform.repassword.data):
+            flash("Passwords don't macth!","error-message")
+        elif(User.query.filter_by(username=sform.username.data).first()):
+            flash("Username is already taken!","error-message")
+        elif(User.query.filter_by(username=sform.email.data).first()):
+            flash("Account with given E-mail already exists!","error-message")
         else:
-            flash("User with this email doesn't exists!","error-message")
-    res = make_response(render_template("recover-mail.html",form = rform))
+            user = User(username = sform.username.data,
+                        email = sform.email.data,
+                        password = generate_password_hash(sform.password.data),
+                        folder = generate_string(),
+                        profile = 'user-icon.jpg',
+                        birthdate = sform.birthdate.data)
+            user.save()
+            flash("Account was successfully created!","info-message")
+            return redirect(url_for('log_in'))
+    res = make_response(render_template("sign-up.html",form=sform))
     return res
 
 
-@app.route("/recoverinfo/<tk>")
-def recoverCheck(tk):
-    if('token' in session and tk == session['token']):
-        user = User.query.filter_by(email = session['email']).first()
-        login_user(user)
-        session.pop('token')
-        session.pop('email')
-        return redirect(url_for('recoverpass'))
-    return make_response("<h2>Access Denied</h2>",403)
 
+@app.route('/',methods=['POST','GET'])
+@app.route('/log-in/',methods=['POST','GET'])
+def log_in():
+    lform = LoginForm()
+    if(lform.validate_on_submit()):
+        user = User.query.filter_by(email = lform.email.data).first()
+        if(user and check_password_hash(user.password, lform.passwordLog.data)):
+            login_user(user)
+            return redirect(url_for('home'))
+        else:
+            flash("Invalid Password or Email!","error-message")
+    res = make_response(render_template('login.html',form = lform))
+    return res
 
-    
-@app.route("/main-recoverpassword/",methods = ['GET','POST'])
+@app.route('/logout/',methods=['POST','GET'])
 @login_required
-def recoverpass():
-    repassForm = NewPasswordForm()
-    if(repassForm.validate_on_submit()):
-        if(repassForm.password.data == repassForm.repassword.data):
-            current_user.password = generate_password_hash(repassForm.password.data)
+def log_out():
+    logout_user()
+    flash("You logged out","info-message")
+    return redirect(url_for('log_in'))
+
+
+@app.route('/home/',methods=['POST','GET'])
+@login_required
+def home():
+    upload_form = UploadMediaForm()
+    if(upload_form.validate_on_submit()):
+        try:
+            filename = media.save(storage=upload_form.file.data,folder=current_user.folder,name=generate_string()+".")
+            print(filename)
+            file = filename.split("/")
+            new_file = Media(media_path=file[1],time_added=datetime.utcnow(),user_id=current_user.id)
+            new_file.save()
+            return redirect(url_for('home'))
+        except UploadNotAllowed:
+            flash("make sure to upload image or video file!","error-message")
+    allmedia = Media.query.filter_by(user_id=current_user.id)
+    res = make_response(render_template('home.html',form = upload_form,user_info=current_user,images=allmedia))
+    return res
+
+
+@app.route('/profile/',methods=['POST','GET'])
+@login_required
+def profile():
+    mform = UploadMediaForm()
+    if(mform.validate_on_submit()):
+        if(mform.profile.data):
+            if(current_user.profile != "person-icon.png"):
+                remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
+            pfilename = profile.save(storage=mform.profile.data,folder=current_user.folder,name=generate_string()+".")
+            pfile = pfilename.split("/")
+            current_user.profile = pfile[1]
             current_user.save()
-            return redirect(url_for("main"))
-        else:
-            flash("passwords don't match!","error-message")
-    res = make_response(render_template("recover-password.html",form = repassForm))
+        if(mfrom.media.data):
+            try:
+                filename = media.save(storage=upload_form.file.data,folder=current_user.folder,name=generate_string()+".")
+                print(filename)
+                file = filename.split("/")
+                new_file = Media(media_path=file[1],time_added=datetime.utcnow(),user_id=current_user.id)
+                new_file.save()
+            except UploadNotAllowed:
+                flash("make sure to upload image or video file!","error-message")
+        return redirect(url_for('profile'))
+    allmedia = Media.query.filter_by(user_id=current_user.id)
+    res = make_response(render_template('profile.html',user_info=current_user,images=allmedia,form=mform))
     return res
 
 
-@app.route('/main-changepassword/',methods = ['GET','POST'])
+@app.route('/comment/<folder>/<media_path>',methods=['POST','GET'])
+@login_required
+def comment_section(folder,media_path):
+    cform = CommentForm()
+    media = Media.query.filter_by(media_path = media_path).first()
+    if(not media):
+        abort(404)
+    if(cform.validate_on_submit()):
+        new_comment = Comments(comment=cform.comment.data,
+                              media_id = media.id,  
+                              user_name=current_user.username,
+                              time_added = datetime.utcnow())
+        new_comment.save()
+        return redirect(url_for('comment_section',folder = folder,media_path = media_path))
+    allcomments = Comments.query.filter_by(media_id = media.id)
+    res = make_response(render_template('comment-image.html',form=cform,folder = folder,
+        media_path=media_path,comments = allcomments))
+    return res
+
+
+@app.route('/password-change/',methods=['POST','GET'])
 @login_required
 def changepass():
-    changepassform = ChangePasswordForm()
-    if(changepassform.validate_on_submit()):
-        if(not check_password_hash(current_user.password, changepassform.oldpassword.data)):
-            flash("Wrong user password!","error-message")
-        elif(changepassform.password.data != changepassform.repassword.data):
-            flash("Passwords don't match!","error-message")
+    chform = ChangePasswordForm()
+    if(chform.validate_on_submit()):
+        if(not check_password_hash(current_user.password, chform.oldpassword.data)):
+            flash("Wrong Password","error-message")
+        elif(chform.password.data != chform.password.data):
+            flash("Passwords don't macth!","error-message")
         else:
-            current_user.password = generate_password_hash(changepassform.password.data)
-            current_user.save()
+            current_user.password = generate_password_hash(chform.password.data)
             flash("Password was successfully changed!","info-message")
-            return redirect(url_for('main'))
-    res = make_response(render_template('change-password.html',form = changepassform))
+            return redirect(url_for("profile"))
+    res = make_response(render_template('change-password.html',form = chform))
     return res
-
-
-
-@app.route("/main-images/",methods = ['GET','POST'])
-@login_required
-def main():
-    if('searchedUser' in session):
-        session.pop('searchedUser')
-    formImg = UploadImage()
-    if(formImg.validate_on_submit()):
-        if(formImg.profile.data):
-            if(current_user.profile != "person-icon.png"):
-                remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
-            profile = photos.save(storage=formImg.profile.data,folder=current_user.folder,name=generate_string()+".")
-            splitprofile = profile.split("/")
-            current_user.profile = splitprofile[1]
-            current_user.save()
-        if(formImg.img.data):
-            try:
-                file = photos.save(storage=formImg.img.data,folder=current_user.folder,name=generate_string()+".")
-                spiltname = file.split("/")
-                new_img = Images(img_path=spiltname[1],user_id=current_user.id,time_added=datetime.utcnow())
-                new_img.save()
-            except UploadNotAllowed:
-                flash("Make sure to upload Image file!","error-message") 
-        return redirect(url_for('main'))
-    userImg = Images.query.filter_by(user_id = current_user.id)
-    res = make_response(render_template("profile.html",user_info = current_user,form = formImg,images = userImg))
-    return res
-
-@app.route('/home-images/',methods=['POST','GET'])
-@login_required
-def homepage():
-    if('searchedUser' in session):
-        session.pop('searchedUser')
-    
-    formImg = UploadImage()
-    if(formImg.validate_on_submit()):
-        if(formImg.profile.data):
-            if(current_user.profile != "person-icon.png"):
-                remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
-            profile = photos.save(storage=formImg.profile.data,folder=current_user.folder,name=generate_string()+".")
-            splitprofile = profile.split("/")
-            current_user.profile = splitprofile[1]
-            current_user.save()
-        if(formImg.img.data):
-            try:
-                file = photos.save(storage=formImg.img.data,folder=current_user.folder,name=generate_string()+".")
-                spiltname = file.split("/")
-                new_img = Images(img_path=spiltname[1],user_id=current_user.id,time_added=datetime.utcnow())
-                new_img.save()
-            except UploadNotAllowed:
-                flash("Make sure to upload Image file!","error-message") 
-        return redirect(url_for('homepage'))
-    
-    
-    userImg = Images.query.filter_by(user_id = current_user.id).order_by(Images.id.desc())
-    res = make_response(render_template("home.html",user_info = current_user,images = userImg,form=formImg))
-    return res
-
-
-@app.route("/main-videos/",methods = ['POST','GET'])
-@login_required
-def videos():
-    formVideo = UploadVideo()
-    if(formVideo.validate_on_submit()):
-        if(formVideo.profile.data):
-            if(current_user.profile != "person-icon.png"):
-                remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
-            profile = photos.save(storage=formVideo.profile.data,folder=current_user.folder,name=generate_string()+".")
-            splitprofile = profile.split("/")
-            current_user.profile = splitprofile[1]
-            current_user.save()
-            
-        if(formVideo.video.data):
-            try:
-                file = video.save(storage = formVideo.video.data,folder=current_user.folder,name=generate_string()+".")
-                spiltname = file.split("/")
-                new_video = Videos(video_path=spiltname[1],user_id=current_user.id,time_added=datetime.utcnow())
-                new_video.save()
-            except UploadNotAllowed:
-                flash("Make sure to upload Video file!","error-message")
-        return redirect(url_for('videos'))
-    userVid = Videos.query.filter_by(user_id = current_user.id)
-    res = make_response(render_template("my-video.html",user_info = current_user,form = formVideo,vids = userVid))
-    return res
-
-
-
-@app.route("/logout/")
-@login_required
-def logOut():
-    logout_user()
-    flash("You loged out!","info-message")
-    return redirect(url_for('logIn'))
-
-
-@app.route('/',methods = ['GET','POST'])
-@app.route('/login/',methods = ['GET','POST'])
-def logIn():
-    logform = LoginForm()
-    if(logform.validate_on_submit()):
-        user = User.query.filter(User.email == logform.email.data).first()
-        if(user and check_password_hash(user.password,logform.passwordLog.data)):
-            login_user(user,remember=logform.remember.data)
-            return redirect(url_for("homepage"))
-        else:
-            flash("Invalid Email or Password!","error-message")
-    res = make_response(render_template("login.html",form = logform))
-    return res
-
-
-@app.route("/comment-image/<username>/<image_path>",methods = ['GET','POST'])
-@login_required
-def comment_section_img(image_path,username):
-    image = Images.query.filter_by(img_path = image_path).first()
-    user = User.query.filter_by(username = username).first()
-    if(not user or not image):
-        abort(404)
-    allcomments = Comments.query.filter_by(image_id = image.id)
-    cform = CommentForm()
-    if(cform.validate_on_submit()):
-        new_comment = Comments(
-            image_id = image.id,
-            time_added = datetime.utcnow(),
-            comment = cform.comment.data,
-            user_name = current_user.username)
-        new_comment.save()
-        return redirect(url_for('comment_section_img',username = username,image_path = image_path))
-    
-    res = make_response(render_template("comment-image.html",form = cform,img = image_path,folder = user.folder,comments = allcomments))
-    return res
-
-
-
-@app.route("/comment-video/<username>/<video_path>",methods = ['GET','POST'])
-@login_required
-def comment_section_video(username,video_path):
-    video = Videos.query.filter_by(video_path = video_path).first()
-    user = User.query.filter_by(username = username).first()
-    if(not user or not video):
-        abort(404)
-    allcomments = Comments.query.filter_by(video_id = video.id)
-    cform = CommentForm()
-    if(cform.validate_on_submit()):
-        new_comment = Comments(
-            video_id = video.id,
-            comment = cform.comment.data,
-            time_added = datetime.utcnow(),
-            user_name = current_user.username)
-        new_comment.save()
-        return redirect(url_for('comment_section_video',username = username,video_path = video_path))
-    res = make_response(render_template("comment-video.html",form = cform,video_path = video_path,folder = user.folder,comments = allcomments))
-    return res
-
-
-
-@app.route("/sign-up/",methods = ['GET','POST'])
-def signUp():
-    signForm = SignUpForm()
-    if(signForm.validate_on_submit()):
-        if(signForm.password.data == signForm.repassword.data):
-            usr_em = User.query.filter_by(email = signForm.email.data).first()
-            usr_name = User.query.filter_by(username = signForm.username.data).first()
-            if(usr_name):
-                flash("Username is already taken!","error-message")
-            elif(usr_em):
-                flash("User with this E-mail already exists!","error-message")
-            else:
-                folderID = generate_string(20)
-                default_img = "person-icon.png"
-                new_user = User(
-                    username = signForm.username.data,
-                    email = signForm.email.data,
-                    password = generate_password_hash(signForm.password.data),
-                    birthdate = signForm.birthdate.data,
-                    profile = default_img,
-                    folder = folderID
-                )
-                new_user.save()
-                flash("Account successfully created!","info-message")
-                return redirect(url_for("logIn"))
-        else:
-            flash("Passwords don't match!","error-message")
-    res = make_response(render_template("sign-up.html",form = signForm),200)
-    return res
-
 
 
 @app.errorhandler(404)
 def render404(error):
     res = make_response("<h2>[Error 404]Page not Found!</h2>",404)
     return res
+
+
+
+
+@app.route('/recover/',methods=['POST','GET'])
+def recover_mail():
+
+
+    res = make_response(render_template("recover-mail.html"))
+    return res
+
