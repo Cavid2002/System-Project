@@ -50,10 +50,10 @@ migrate = Migrate(app,db)
 
 mail = Mail(app)
 
-profile = UploadSet("profile",IMAGES)
+profile_img = UploadSet("profile",IMAGES)
 media = UploadSet("galery", ('mov','mp4','jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'webp'))
 configure_uploads(app, media)
-configure_uploads(app, profile)
+configure_uploads(app, profile_img)
 
 
 

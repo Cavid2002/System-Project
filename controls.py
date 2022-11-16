@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
 from flask_mail import Message
-from app import app,login_manger,mail,media,profile
+from app import app,login_manger,mail,media,profile_img
 from flask_uploads import UploadNotAllowed
 from uuid import uuid4
 from datetime import timedelta,datetime
@@ -22,7 +22,15 @@ def generate_string(size: int = 15) -> str:
         result += choice(symbols)
     return result
 
- 
+def clear_session():
+    if('searchedUser' in session):
+        session.pop('searchedUser')
+
+    if('email' in session and 'token' in session):
+        session.pop('email')
+        session.pop('token')        
+
+
 
 @app.before_request
 def make_session_permanent():
@@ -68,6 +76,7 @@ def sign_up():
 @app.route('/',methods=['POST','GET'])
 @app.route('/log-in/',methods=['POST','GET'])
 def log_in():
+    clear_session()
     lform = LoginForm()
     if(lform.validate_on_submit()):
         user = User.query.filter_by(email = lform.email.data).first()
@@ -79,12 +88,14 @@ def log_in():
     res = make_response(render_template('login.html',form = lform))
     return res
 
+
 @app.route('/logout/',methods=['POST','GET'])
 @login_required
 def log_out():
     logout_user()
     flash("You logged out","info-message")
     return redirect(url_for('log_in'))
+
 
 
 @app.route('/home/',methods=['POST','GET'])
@@ -106,19 +117,20 @@ def home():
     return res
 
 
+
 @app.route('/profile/',methods=['POST','GET'])
 @login_required
 def profile():
-    mform = UploadMediaForm()
-    if(mform.validate_on_submit()):
-        if(mform.profile.data):
-            if(current_user.profile != "person-icon.png"):
+    upload_form = UploadMediaForm()
+    if(upload_form.validate_on_submit()):
+        if(upload_form.profile.data):
+            if(current_user.profile != "user-icon.jpg"):
                 remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
-            pfilename = profile.save(storage=mform.profile.data,folder=current_user.folder,name=generate_string()+".")
+            pfilename = profile_img.save(storage=upload_form.profile.data,folder=current_user.folder,name=generate_string()+".")
             pfile = pfilename.split("/")
             current_user.profile = pfile[1]
             current_user.save()
-        if(mfrom.media.data):
+        if(upload_form.file.data):
             try:
                 filename = media.save(storage=upload_form.file.data,folder=current_user.folder,name=generate_string()+".")
                 print(filename)
@@ -126,10 +138,10 @@ def profile():
                 new_file = Media(media_path=file[1],time_added=datetime.utcnow(),user_id=current_user.id)
                 new_file.save()
             except UploadNotAllowed:
-                flash("make sure to upload image or video file!","error-message")
+                flash("Make sure to upload image or video file!","error-message")
         return redirect(url_for('profile'))
     allmedia = Media.query.filter_by(user_id=current_user.id)
-    res = make_response(render_template('profile.html',user_info=current_user,images=allmedia,form=mform))
+    res = make_response(render_template('profile.html',user_info=current_user,images=allmedia,form=upload_form))
     return res
 
 
@@ -170,18 +182,54 @@ def changepass():
     return res
 
 
+@app.route('/recover/',methods=['POST','GET'])
+def recover_mail():
+    rform = PasswordRecoverForm()
+    if(rform.validate_on_submit()):
+        em = rform.email.data
+        user = User.query.filter_by(email = em).first()
+        if(user):
+            token = urandom(20).hex()
+            session['email'] = em
+            session['token'] = token
+            msg = Message(f"Email Recovery:",recipients=[em])
+            msg.body = f"Email Recovery token is:{url_for('recoverCheck',tk = token, _external = True)} -> Do not share with anyone!\n if it wasn't you ignore this message"
+            mail.send(msg)
+            flash("Recovery token with instructions was sent to your E-mail!","info-message")
+        else:
+            flash("User with this email doesn't exists!","error-message")
+    res = make_response(render_template("recover-mail.html",form = rform))
+    return res
+
+
+@app.route("/main-recoverpassword/",methods = ['GET','POST'])
+@login_required
+def recoverpass():
+    repassForm = NewPasswordForm()
+    if(repassForm.validate_on_submit()):
+        if(repassForm.password.data == repassForm.repassword.data):
+            current_user.password = generate_password_hash(repassForm.password.data)
+            current_user.save()
+            flash("Password was successfully changed!","info-message")
+            return redirect(url_for("profile"))
+        else:
+            flash("passwords don't match!","error-message")
+    res = make_response(render_template("recover-password.html",form = repassForm))
+    return res
+
+
+@app.route("/recoverinfo/<tk>")
+def recoverCheck(tk):
+    if('token' in session and tk == session['token']):
+        user = User.query.filter_by(email = session['email']).first()
+        login_user(user)
+        session.pop('token')
+        session.pop('email')
+        return redirect(url_for('recoverpass'))
+    return make_response("<h2>Access Denied</h2>",403)
+
+
 @app.errorhandler(404)
 def render404(error):
     res = make_response("<h2>[Error 404]Page not Found!</h2>",404)
     return res
-
-
-
-
-@app.route('/recover/',methods=['POST','GET'])
-def recover_mail():
-
-
-    res = make_response(render_template("recover-mail.html"))
-    return res
-

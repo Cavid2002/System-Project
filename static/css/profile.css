@@ -235,6 +235,21 @@ main .container .profile-bottom .profile-images img {
 }
 
 /*--------------*/
+.btn-label:hover{
+  outline: 1px solid #2960C0 !important;
+  background-color: white !important;
+  color: #2960C0 !important;
+}
+
+.btn-label:focus{
+  border: 1px solid #38A936 !important;
+  background-color: #38A936 !important;
+  color: white !important;
+}
+
+.none{
+  display: none;
+}
 .error-message{
     width: 100%;
     height: 25px;
