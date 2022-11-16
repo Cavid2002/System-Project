@@ -125,13 +125,10 @@ nav .navbar-right .dropdown .dropdown-list li:hover {
 nav .navbar-right .dropdown .dropdown-list li:hover a {
   color: rgb(86, 97, 198);
 }
-nav .navbar-right .profile {
+nav .navbar-right .profile img {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-image: url(../../img/avatar.jpg);
-  background-position: center;
-  background-size: cover;
 }
 
 .active {
@@ -147,6 +144,7 @@ main {
   display: flex;
   padding-top: 20px;
   margin-top: 50px;
+  min-height: 100vh;
 }
 main .main-left {
   width: 30%;
@@ -182,12 +180,9 @@ main .main-left .profile .birthdate i {
 main .main-left .profile .birthdate .cake {
   margin-right: 11px;
 }
-main .main-left .profile .profile-img {
+main .main-left .profile .profile-img img{
   width: 100px;
   height: 100px;
-  background-image: url(../../img/avatar.jpg);
-  background-position: center;
-  background-size: cover;
   border-radius: 50%;
   margin: 15px auto;
 }
@@ -252,13 +247,10 @@ main .main-middle .posts .post .post-top {
   justify-content: flex-start;
   align-items: center;
 }
-main .main-middle .posts .post .post-top .post-top-photo {
+main .main-middle .posts .post .post-top .post-top-photo img{
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-image: url(../../img/avatar.jpg);
-  background-position: center;
-  background-size: cover;
   margin-right: 10px;
 }
 main .main-middle .posts .post .post-top p {
@@ -287,6 +279,9 @@ main .main-middle .posts .post .post-likes {
   font-size: 14px;
   font-weight: 500;
   padding-top: 7px;
+}
+.comment-section{
+  color:black;
 }
 main .main-middle .posts .post .post-likes span {
   font-family: "Poppins", sans-serif;
@@ -327,6 +322,11 @@ main .main-right .add-image {
   background-color: white;
   margin-bottom: 20px;
 }
+/* main .main-right .add-image p{
+  z-index: -1;
+  position: absolute;
+} */
+
 main .main-right .add-image button {
   color: rgb(86, 97, 198);
   background: none;

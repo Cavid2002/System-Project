@@ -18,9 +18,9 @@ class SignUpForm(FlaskForm):
     email = EmailField(label=Markup('<i class="fa-solid inputIcon fa-envelope"></i>'),
         validators=[DataRequired(),Length(min = 10)])
     password = PasswordField(label=Markup('<i class="fa-solid inputIcon fa-lock"></i>'),
-        validators=[DataRequired()])
+        validators=[DataRequired(),Length(min=8)])
     repassword = PasswordField(label=Markup('<i class="fa-solid inputIcon fa-lock"></i>'),
-        validators=[DataRequired()])
+        validators=[DataRequired(),Length(min=8)])
     birthdate = DateField(label=Markup('<i class="fa-solid inputIcon fa-calendar-days"></i>'),
         validators=[DataRequired()])
  
@@ -42,8 +42,8 @@ class PasswordRecoverForm(FlaskForm):
 
 
 class NewPasswordForm(FlaskForm):
-    password = PasswordField(validators=[DataRequired()])
-    repassword = PasswordField(validators=[DataRequired()])
+    password = PasswordField(validators=[DataRequired(),Length(min=8)])
+    repassword = PasswordField(validators=[DataRequired(),Length(min=8)])
 
 
 
@@ -57,5 +57,5 @@ class CommentForm(FlaskForm):
 
 class ChangePasswordForm(FlaskForm):
     oldpassword = PasswordField(validators=[DataRequired()])
-    password = PasswordField(validators=[DataRequired()])
-    repassword = PasswordField(validators=[DataRequired()])
+    password = PasswordField(validators=[DataRequired(),Length(min=8)])
+    repassword = PasswordField(validators=[DataRequired(),Length(min=8)])

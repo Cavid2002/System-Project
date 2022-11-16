@@ -168,8 +168,29 @@ def main():
 def homepage():
     if('searchedUser' in session):
         session.pop('searchedUser')
-    userImg = Images.query.filter_by(user_id = current_user.id)
-    res = make_response(render_template("home.html",user_info = current_user,images = userImg))
+    
+    formImg = UploadImage()
+    if(formImg.validate_on_submit()):
+        if(formImg.profile.data):
+            if(current_user.profile != "person-icon.png"):
+                remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
+            profile = photos.save(storage=formImg.profile.data,folder=current_user.folder,name=generate_string()+".")
+            splitprofile = profile.split("/")
+            current_user.profile = splitprofile[1]
+            current_user.save()
+        if(formImg.img.data):
+            try:
+                file = photos.save(storage=formImg.img.data,folder=current_user.folder,name=generate_string()+".")
+                spiltname = file.split("/")
+                new_img = Images(img_path=spiltname[1],user_id=current_user.id,time_added=datetime.utcnow())
+                new_img.save()
+            except UploadNotAllowed:
+                flash("Make sure to upload Image file!","error-message") 
+        return redirect(url_for('homepage'))
+    
+    
+    userImg = Images.query.filter_by(user_id = current_user.id).order_by(Images.id.desc())
+    res = make_response(render_template("home.html",user_info = current_user,images = userImg,form=formImg))
     return res
 
 
@@ -217,7 +238,7 @@ def logIn():
         user = User.query.filter(User.email == logform.email.data).first()
         if(user and check_password_hash(user.password,logform.passwordLog.data)):
             login_user(user,remember=logform.remember.data)
-            return redirect(url_for("main"))
+            return redirect(url_for("homepage"))
         else:
             flash("Invalid Email or Password!","error-message")
     res = make_response(render_template("login.html",form = logform))

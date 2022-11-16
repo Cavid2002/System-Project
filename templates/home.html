@@ -43,7 +43,9 @@
             <div class="navbar-right">
                 <!-- <a href="./login.html" class="logout">Log Out</a> -->
                 <div class="profileDropdown" onclick="dropdownOpen()">
-                    <div class="profile"></div>
+                    <div class="profile">
+                        <img src="{{url_for('static',filename='uploads/'+ user_info.folder + '/' + user_info.profile)}}" alt="" width="100%">
+                    </div>
                     <i class="icon-white"><span id="dropdownIcon" class="material-icons">arrow_drop_down</span></i>
                 </div>
                 <div class="dropdown">
@@ -60,7 +62,7 @@
         <div class="main-left">
             <div class="profile">
                 <div class="profile-img">
-                    
+                    <img src="{{url_for('static',filename='uploads/'+ user_info.folder + '/' + user_info.profile)}}" alt="" width="100%">
                 </div>
                 <h4>{{user_info.username}}</h4>
                 <div class="hr"></div>
@@ -72,7 +74,7 @@
                 <a href="{{url_for('main')}}" class="viewProfile">View Your Profile</a>
             </div>
             <div class="interests">
-                <!-- <p>Interests</p>
+                 <p>Interests</p>
                 <span class="interest1">Coding</span>
                 <span class="interest2">Books</span>
                 <span class="interest3">Films</span>
@@ -82,7 +84,7 @@
                 <span class="interest5">Friends</span>
                 <span class="interest5">Food</span>
                 <span class="interest6">Design</span>
-                <span class="interest7">Art</span> -->
+                <span class="interest7">Art</span>
             </div>
         </div>
         <div class="main-middle">
@@ -90,7 +92,9 @@
                 {% for img in images %}
                 <div class="post">
                     <div class="post-top">
-                        <div class="post-top-photo"></div>
+                        <div class="post-top-photo">
+                            <img src="{{url_for('static',filename='uploads/'+ user_info.folder + '/' + user_info.profile)}}" alt="" width="100%">
+                        </div>
                         <p>{{user_info.username}}</p>
                     </div>
                     <div class="hr-middle"></div>
@@ -100,14 +104,14 @@
                     <div class="post-icons">
                         <div class="post-icons-left">
                             <i class="fa-regular fa-heart like-icon"></i>
-                            <a href="{{url_for('comment_section_img',image_path=img.img_path,username=user_info.username)}}" title=""><i class="fa-regular fa-comment comment-icon"></i></a>
+                            <a href="{{url_for('comment_section_img',image_path=img.img_path,username=user_info.username)}}" class="comment-section"><i class="fa-regular fa-comment comment-icon"></i></a>
                         </div>
                         <div class="post-icons right">
                             <i class="fa-regular fa-bookmark bookmark-icon like-icon"></i>
                         </div>
                     </div>
                     <div class="post-likes">
-                        <p>Liked by <span>15</span> users</p>
+                        <p>Liked by <span>1</span> users</p>
                     </div>
                     <div class="hr-middle"></div>
                     <div class="post-caption">
@@ -122,9 +126,14 @@
             </div>
         </div>
         <div class="main-right">
-            <div class="add-image">
-                <button class="addImage d-flex"><i class="fa-solid fa-image"></i><p>Add Image</p></button>
-            </div>
+            <form method="post" enctype="multipart/form-data">
+                {{form.csrf_token}}
+                <div class="add-image">
+                    <p>{{form.img(placeholder="Add new image:")}}</p>
+                    <button type="submit" class="addImage d-flex"><i class="fa-solid fa-image"></i>Add Image</button>
+                </div>
+
+            </form>
             <div class="advertisements">
                
             </div>
