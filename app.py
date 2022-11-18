@@ -15,7 +15,7 @@ def create_app():
     
     app.config['UPLOADED_PROFILE_DEST'] = "static/uploads/"
     app.config['UPLOADED_GALERY_DEST'] = "static/uploads/"
-
+    
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
@@ -54,7 +54,6 @@ profile_img = UploadSet("profile",IMAGES)
 media = UploadSet("galery", ('mov','mp4','jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'webp'))
 configure_uploads(app, media)
 configure_uploads(app, profile_img)
-
 
 
 from controls import *
