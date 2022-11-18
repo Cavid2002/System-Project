@@ -127,13 +127,10 @@ nav .navbar-right .dropdown .dropdown-list li:hover {
 nav .navbar-right .dropdown .dropdown-list li:hover a {
   color: rgb(86, 97, 198);
 }
-nav .navbar-right .profile {
+nav .navbar-right .profile img{
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-image: url(../../img/avatar.jpg);
-  background-position: center;
-  background-size: cover;
 }
 
 .active {

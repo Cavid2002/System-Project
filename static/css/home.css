@@ -113,11 +113,12 @@ nav .navbar-right .dropdown .dropdown-list {
 }
 nav .navbar-right .dropdown .dropdown-list li {
   background-color: rgb(86, 97, 198);
-  padding: 15px 30px;
   color: white;
 }
 nav .navbar-right .dropdown .dropdown-list li a {
-  padding: 0;
+  padding: 15px 30px;
+  display: inline-block;
+  width: 100%;
 }
 nav .navbar-right .dropdown .dropdown-list li:hover {
   background-color: white;

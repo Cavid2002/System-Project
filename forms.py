@@ -42,7 +42,7 @@ class NewPasswordForm(FlaskForm):
 
 
 class SearchForm(FlaskForm):
-    inputdata = StringField(label="Enter the Username:",validators=[DataRequired()])
+    searchBar = StringField(validators=[DataRequired()])
 
 
 class CommentForm(FlaskForm):

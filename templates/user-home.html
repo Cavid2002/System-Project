@@ -37,9 +37,8 @@
                 </ul>
             </div>
             <div class="nav-search-main">
-                <form method="post" enctype="multipart/form-data">
-                    {{search_form.csrf_token}}
-                    {{search_form.searchBar(placeholder="Search:")}}
+                <form method="post">
+                    <input type="text" placeholder="Search" id="searchBar" />
                     <label for="searchBar"><i class="fa-solid fa-magnifying-glass search-icon"></i></label>
                 </form>
             </div>
@@ -77,7 +76,7 @@
                 <a href="{{url_for('profile')}}" class="viewProfile">View Your Profile</a>
             </div>
             <div class="interests">
-                 <p>Interests</p>
+                <p>Interests</p>
                 <span class="interest1">Coding</span>
                 <span class="interest2">Books</span>
                 <span class="interest3">Films</span>
@@ -102,7 +101,7 @@
                     </div>
                     <div class="hr-middle"></div>
                     <div class="post-main">
-                        {%set fimg = img.media_path.split(".") %}
+                        {%set fimg = img.media_path.split(".")  %}
                         {% if fimg[1] == "mov" or fimg[1] == "mp4"%}
                             <video width="100%" controls>
                                 <source src="{{url_for('static',filename = 'uploads/' + user_info.folder + '/' + img.media_path)}}">
@@ -111,7 +110,7 @@
                         {%else%}
                             <img src="{{url_for('static',filename = 'uploads/' + user_info.folder + '/' + img.media_path)}}" alt="" width="100%">
                         {% endif %}
-                    </div>
+                        </div>
                     <div class="post-icons">
                         <div class="post-icons-left">
                             <i class="fa-regular fa-heart like-icon"></i>
@@ -137,14 +136,7 @@
             </div>
         </div>
         <div class="main-right">
-            <form method="post" enctype="multipart/form-data">
-                {{form.csrf_token}}
-                <div class="add-image">
-                    <p>{{form.file(placeholder="Add new image:")}}</p>
-                    <button type="submit" class="addImage d-flex"><i class="fa-solid fa-image"></i>Add Image</button>
-                </div>
-
-            </form>
+            
             <div class="advertisements">
                
             </div>

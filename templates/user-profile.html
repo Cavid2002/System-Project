@@ -59,27 +59,7 @@
                 </div>
                 <div class="profile-content">
                     <p>{{user_info.username}}</p>
-                    <form method="post" enctype="multipart/form-data">
-                        {{form.csrf_token}}
-                        <div>
-                            <button type="submit">Submit Changes</button>
-                            <button type="button" class="btn-label">
-                                {{form.profile.label}}
-                                {{form.profile(class='none')}}
-                            </button>
-                            
-                            <button type="button" class="btn-label">
-                                {{form.file.label}}
-                                {{form.file(class='none')}}
-                            </button>
-                            
-                            {%for cat,msg in get_flashed_messages(True)%}
-                                <div class="{{cat}}">
-                                    <span>{{msg}}</span>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </form>
+                    
                 </div>
             </div>
             <div class="profile-bottom">

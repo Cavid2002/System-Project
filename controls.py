@@ -101,8 +101,17 @@ def log_out():
 @app.route('/home/',methods=['POST','GET'])
 @login_required
 def home():
+    search_form = SearchForm()
     upload_form = UploadMediaForm()
-    if(upload_form.validate_on_submit()):
+    
+    if(search_form.validate_on_submit()):
+        user = User.query.filter_by(username = search_form.searchBar.data).first()
+        if(user):
+            return redirect(url_for('searched_user_home',username = user.username))
+        else:
+            flash("User with given name doesn't exists!")
+    
+    if(upload_form.validate_on_submit() and upload_form.file.data):
         try:
             filename = media.save(storage=upload_form.file.data,folder=current_user.folder,name=generate_string()+".")
             print(filename)
@@ -112,10 +121,27 @@ def home():
             return redirect(url_for('home'))
         except UploadNotAllowed:
             flash("make sure to upload image or video file!","error-message")
+                
     allmedia = Media.query.filter_by(user_id=current_user.id)
-    res = make_response(render_template('home.html',form = upload_form,user_info=current_user,images=allmedia))
+    res = make_response(render_template('home.html',form = upload_form,user_info=current_user,images=allmedia,search_form = search_form))
     return res
 
+
+@app.route('/<username>/home/',methods=['POST','GET'])
+@login_required
+def searched_user_home(username):
+    user = User.query.filter_by(username = username).first()
+    allmedia = Media.query.filter_by(user_id = user.id)
+    search_form = SearchForm()
+    if(search_form.validate_on_submit()):
+        us = User.query.filter_by(username = search_form.searchBar.data).first()
+        if(us):
+            return redirect(url_for('searched_user_home',username = us.username))
+        else:
+            flash("User with given name doesn't exists!")
+    res = make_response(render_template('user-home.html',images = allmedia,search_form = search_form,user_info = user))
+    return res
+    
 
 
 @app.route('/profile/',methods=['POST','GET'])
