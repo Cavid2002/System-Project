@@ -38,7 +38,8 @@
             </div>
             <div class="nav-search-main">
                 <form method="post">
-                    <input type="text" placeholder="Search" id="searchBar" />
+                    {{search_form.csrf_token}}
+                    {{search_form.searchBar(placeholder="Search:")}}
                     <label for="searchBar"><i class="fa-solid fa-magnifying-glass search-icon"></i></label>
                 </form>
             </div>
@@ -46,7 +47,7 @@
                 <!-- <a href="./login.html" class="logout">Log Out</a> -->
                 <div class="profileDropdown" onclick="dropdownOpen()">
                     <div class="profile">
-                        <img src="{{url_for('static',filename='uploads/'+ user_info.folder + '/' + user_info.profile)}}" alt="" width="100%">
+                        <img src="{{url_for('static',filename='uploads/'+ current_user.folder + '/' + current_user.profile)}}" alt="" width="100%">
                     </div>
                     <i class="icon-white"><span id="dropdownIcon" class="material-icons">arrow_drop_down</span></i>
                 </div>
@@ -73,7 +74,7 @@
                     <i class="fas fa-birthday-cake cake"></i>{{user_info.birthdate.strftime('%d %B %Y')}}
                 </p>
                 <div class="hr"></div>
-                <a href="{{url_for('profile')}}" class="viewProfile">View Your Profile</a>
+                <a href="{{url_for('searched_user_profile',username=user_info.username)}}" class="viewProfile">View {{user_info.username}}'s Profile</a>
             </div>
             <div class="interests">
                 <p>Interests</p>

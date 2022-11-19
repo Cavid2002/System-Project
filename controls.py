@@ -56,7 +56,7 @@ def sign_up():
             flash("Passwords don't macth!","error-message")
         elif(User.query.filter_by(username=sform.username.data).first()):
             flash("Username is already taken!","error-message")
-        elif(User.query.filter_by(username=sform.email.data).first()):
+        elif(User.query.filter_by(email=sform.email.data).first()):
             flash("Account with given E-mail already exists!","error-message")
         else:
             user = User(username = sform.username.data,
@@ -109,7 +109,7 @@ def home():
         if(user):
             return redirect(url_for('searched_user_home',username = user.username))
         else:
-            flash("User with given name doesn't exists!")
+            flash("User with given name doesn't exists!","error-message")
     
     if(upload_form.validate_on_submit() and upload_form.file.data):
         try:
@@ -131,6 +131,8 @@ def home():
 @login_required
 def searched_user_home(username):
     user = User.query.filter_by(username = username).first()
+    if(not user):
+        abort(404)
     allmedia = Media.query.filter_by(user_id = user.id)
     search_form = SearchForm()
     if(search_form.validate_on_submit()):
@@ -168,6 +170,17 @@ def profile():
         return redirect(url_for('profile'))
     allmedia = Media.query.filter_by(user_id=current_user.id)
     res = make_response(render_template('profile.html',user_info=current_user,images=allmedia,form=upload_form))
+    return res
+
+
+@app.route('/<username>/profile/',methods=['POST','GET'])
+@login_required
+def searched_user_profile(username):
+    user = User.query.filter_by(username = username).first()
+    if(not user):
+        abort(404)
+    allmedia = Media.query.filter_by(user_id = user.id)
+    res = make_response(render_template("user-profile.html",user_info = user,images=allmedia))
     return res
 
 

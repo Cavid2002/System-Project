@@ -26,7 +26,7 @@ class SignUpForm(FlaskForm):
  
 
 class UploadMediaForm(FlaskForm):
-    file = FileField(label="Add new file!")
+    file = FileField(label="Add new Post!")
     profile = FileField(label="Change Profile photo")
 
 

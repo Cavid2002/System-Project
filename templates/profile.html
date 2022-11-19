@@ -88,7 +88,7 @@
                     {% if fimg[1] == "mp4" or fimg[1] == "mov" %}
                         <div class="profile-images">
                             <a href="{{url_for('comment_section',folder=user_info.folder,media_path=img.media_path)}}">
-                            <video width="100%" height="100%" >
+                            <video controls>
                                 <source src="{{url_for('static',filename = 'uploads/' + user_info.folder + '/' + img.media_path)}}">
                                 Your browser does not support the video tag.
                             </video>
