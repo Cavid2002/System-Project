@@ -106,6 +106,27 @@
 
 @mixin lg {
     @media (max-width: map-get($breakpoints, "lg")) {
+        .profile-images{
+            width: 100% !important;
+        }
+        .container{
+            padding: 0 20px !important;
+        }
+
+        .profile-content{
+            margin: 0 auto;
+        }
+
+        .btns{
+            display: flex;
+            flex-direction: column;
+            
+            button {
+                background: map-get($colors, "mainColor");
+                padding: 10px 15px;
+                margin: 2px 0;
+            }
+        }
     }
 } 
 
