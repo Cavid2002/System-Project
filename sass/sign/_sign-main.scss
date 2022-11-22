@@ -161,10 +161,10 @@ main {
     .comment-section {
         background-color: white;
         width: 70%;
-        // height: 70vh;
+        height: 70vh;
         margin: 0 auto;
         border-radius: 10px;
-        box-shadow: 5px 5px 16px 5px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
 
         .comment-image {
             width: 50%;
