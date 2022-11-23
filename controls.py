@@ -103,8 +103,7 @@ def log_out():
 def home():
     search_form = SearchForm()
     upload_form = UploadMediaForm()
-    
-    if(search_form.validate_on_submit()):
+    if(search_form.validate_on_submit() and search_form.searchBar.data):
         user = User.query.filter_by(username = search_form.searchBar.data).first()
         if(user):
             return redirect(url_for('searched_user_home',username = user.username))
@@ -122,7 +121,7 @@ def home():
         except UploadNotAllowed:
             flash("make sure to upload image or video file!","error-message")
                 
-    allmedia = Media.query.filter_by(user_id=current_user.id)
+    allmedia = current_user.media
     res = make_response(render_template('home.html',form = upload_form,user_info=current_user,images=allmedia,search_form = search_form))
     return res
 
@@ -133,7 +132,7 @@ def searched_user_home(username):
     user = User.query.filter_by(username = username).first()
     if(not user):
         abort(404)
-    allmedia = Media.query.filter_by(user_id = user.id)
+    allmedia = user.media
     search_form = SearchForm()
     if(search_form.validate_on_submit()):
         us = User.query.filter_by(username = search_form.searchBar.data).first()
@@ -168,7 +167,7 @@ def profile():
             except UploadNotAllowed:
                 flash("Make sure to upload image or video file!","error-message")
         return redirect(url_for('profile'))
-    allmedia = Media.query.filter_by(user_id=current_user.id)
+    allmedia = current_user.media
     res = make_response(render_template('profile.html',user_info=current_user,images=allmedia,form=upload_form))
     return res
 
@@ -179,7 +178,7 @@ def searched_user_profile(username):
     user = User.query.filter_by(username = username).first()
     if(not user):
         abort(404)
-    allmedia = Media.query.filter_by(user_id = user.id)
+    allmedia = user.media
     res = make_response(render_template("user-profile.html",user_info = user,images=allmedia))
     return res
 
@@ -195,11 +194,12 @@ def comment_section(folder,media_path):
         new_comment = Comments(comment=cform.comment.data,
                               media_id = media.id,  
                               user_name=current_user.username,
+                              user_profile = current_user.folder+'/'+current_user.profile,
                               time_added = datetime.utcnow())
         new_comment.save()
         return redirect(url_for('comment_section',folder = folder,media_path = media_path))
-    allcomments = Comments.query.filter_by(media_id = media.id)
-    res = make_response(render_template('comment-image.html',form=cform,folder = folder,
+    allcomments = media.comments
+    res = make_response(render_template('comment.html',form=cform,folder = folder,
         media_path=media_path,comments = allcomments))
     return res
 
@@ -256,6 +256,20 @@ def recoverpass():
     res = make_response(render_template("recover-password.html",form = repassForm))
     return res
 
+
+@app.route('/like/<post_path>/')
+@login_required
+def like(post_path):
+    media = Media.query.filter_by(media_path = post_path).first()
+    like = Likes.query.filter_by(user_id = current_user_id,media_id = media.id)
+
+    if(like):
+        db.session.delete(like)
+        db.session.commit()
+    else:
+        like = Likes(user_id = current_user_id,media_id = media.id)
+        like.save()
+    return redirect(url_for('home'))
 
 @app.route("/recoverinfo/<tk>")
 def recoverCheck(tk):

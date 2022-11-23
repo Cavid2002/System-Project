@@ -11,6 +11,7 @@ class User(db.Model,UserMixin):
     folder = db.Column(db.String(100))
     media = db.relationship('Media', backref='user', lazy=True)
     like = db.relationship('Likes', backref='user', lazy=True)
+    
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -24,6 +25,7 @@ class Media(db.Model):
     time_added = db.Column(db.DateTime)
     comments = db.relationship('Comments',backref = 'media', lazy = True)
     like = db.relationship('Likes', backref='media', lazy=True)
+
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -35,6 +37,7 @@ class Comments(db.Model):
     media_id = db.Column(db.Integer,db.ForeignKey('media.id'))
     time_added = db.Column(db.DateTime)
     user_name = db.Column(db.String(25),nullable = False)
+    user_profile = db.Column(db.String(100),nullable = False)
     comment = db.Column(db.Text,nullable = False)
 
     def save(self):
@@ -46,6 +49,10 @@ class Likes(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
     media_id = db.Column(db.Integer,db.ForeignKey('media.id'))
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
 db.create_all()
 

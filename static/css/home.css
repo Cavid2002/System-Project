@@ -356,6 +356,10 @@ main .main-right .advertisements img {
   left: 0 !important;
 }
 
+.hide{
+  display: none;
+}
+
 @media (max-width: 576px) {
   nav ul li {
     font-size: 14px;

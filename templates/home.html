@@ -142,8 +142,11 @@
             <form method="post" enctype="multipart/form-data">
                 {{form.csrf_token}}
                 <div class="add-image">
-                    <p>{{form.file(placeholder="Add new image:")}}</p>
-                    <button type="submit" class="addImage d-flex"><i class="fa-solid fa-image"></i>Add Image</button>
+                    <button type="button">
+                        <label for="file" class="addImage d-flex"><i class="fa-solid fa-image"></i>Add new Post</label>
+                    </button>
+                    <p class="hide">{{form.file(placeholder="Add new image:")}}</p>
+                    <button type="submit" class="addImage d-flex">Submit</button>
                 </div>
 
             </form>

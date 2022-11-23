@@ -1,9 +1,20 @@
-@import url("http://fonts.cdnfonts.com/css/euclid-circular-a");
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.hr {
+  height: 1px;
+  background-color: #EEEEEE;
+  margin: 15px 0;
+}
+
+.hr-middle {
+  height: 1px;
+  background-color: #EEEEEE;
+  margin-top: 10px;
 }
 
 .d-flex {
@@ -44,6 +55,22 @@ main {
   padding-bottom: 10px;
   padding: 30px 0;
 }
+main .forget-password {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+main .forget-password #forgetemail {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+main .forget-password #forgetBtn {
+  width: 100%;
+}
+main .forget-password .forget-header {
+  font-size: 24px !important;
+  text-align: center;
+  margin-bottom: 40px !important;
+}
 main .container {
   width: 70%;
   background-color: white;
@@ -62,18 +89,15 @@ main .container .sign-up-main h1 {
 }
 main .container .sign-up-main .form-btn {
   padding: 15px 40px;
-  width: 100%;
   border: none;
   background-color: rgb(74, 91, 243);
   border-radius: 10px;
   cursor: pointer;
   color: white;
-  transition: 0.1s all;
+  transition: 0.3s all;
 }
 main .container .sign-up-main .form-btn:hover {
-  background-color: white;
-  color: rgb(74, 91, 243);
-  outline: 1px solid rgb(74, 91, 243);
+  background-color: rgb(42, 60, 221);
 }
 main .container .sign-up-main .form-group {
   margin-bottom: 25px;
@@ -139,12 +163,7 @@ main .sign-up-img {
   align-items: center;
 }
 main .sign-up-img img {
-  width: 100%;  
-}
-.forgetPass{
-  color: rgb(86, 97, 198);
-  margin-top: 15px;
-  display: inline-block;
+  width: 100%;
 }
 
 .chpass {
@@ -187,6 +206,126 @@ main .sign-up-img img {
   
 }
 
+.comment-body {
+  background-color: #F8F8F8;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.comment-body .comment-section {
+  background-color: white;
+  width: 70%;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 5px 5px 16px 5px rgba(0, 0, 0, 0.05);
+}
+.comment-body .comment-section .comment-image {
+  width: 50%;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10% 0;
+}
+.comment-body .comment-section .comment-image .arrow-icon {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  color: black;
+  font-size: 20px;
+  padding: 6px;
+  cursor: pointer;
+}
+.comment-body .comment-section .comment-main {
+  width: 50%;
+  overflow-y: auto;
+  position: relative;
+}
+* .comment-body .comment-section .comment-main::-webkit-scrollbar {
+  display: none;
+}
+.comment-body .comment-section .comment-main .comments {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-left: 1px solid black;
+}
+.comment-body .comment-section .comment-main .comments-top {
+  flex-grow: 9;
+}
+.comment-body .comment-section .comment-main .comments-top .all-comments {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+.comment-body .comment-section .comment-main .comments-top .all-comments:first-child {
+  padding-top: 5px;
+}
+.comment-body .comment-section .comment-main .comments-top .all-comments:last-child {
+  border-bottom: 0;
+  padding-bottom: 5px;
+}
+.comment-body .comment-section .comment-main .comments-top .all-comments .comment-top-photo {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-image: url(../img/avatar.jpg);
+  background-position: center;
+  background-size: cover;
+  margin-right: 10px;
+}
+
+.comment-body .comment-section .comment-main .comments-top .all-comments .comment-top-photo img{
+  border-radius: 50%;
+}
+.comment-body .comment-section .comment-main .comments-top .all-comments p {
+  font-weight: 600;
+  font-size: 12px;
+}
+.comment-body .comment-section .comment-main .comments-top .all-comments .comment-content {
+  font-weight: 400;
+  font-size: 13px;
+}
+.comment-body .comment-section .comment-main .comments-top .all-comments:first-child {
+  margin-top: 10px;
+}
+.comment-body .comment-section .comment-main .comments-top .all-comments:last-child {
+  margin-bottom: 10px;
+}
+.comment-body .comment-section .comment-main .comment-input {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+}
+.comment-body .comment-section .comment-main .comment-input input {
+  width: 100%;
+  height: 45px;
+  outline: 0;
+  padding-left: 20px;
+  border: none;
+  border-top: 1px solid #EEEEEE;
+}
+.comment-body .comment-section .comment-main .comment-input button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  border: none;
+  background: none;
+  color: rgb(86, 97, 198);
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#comment{
+  border-radius: 0 0 10px 0;
+}
+
 @media (max-width: 992px) {
   .sign-up-img {
     display: none !important;
@@ -198,6 +337,19 @@ main .sign-up-img img {
     width: 100%;
   }
   .form-checkbox-right {
+    width: 100% !important;
+  }
+  .comment-section {
+    flex-direction: column;
+    width: 90%;
+  }
+  .comment-image {
+    width: 100% !important;
+  }
+  .comment-image img {
+    display: none;
+  }
+  .comment-main {
     width: 100% !important;
   }
 }
@@ -224,9 +376,5 @@ main .sign-up-img img {
     padding-top: 40px;
     padding-bottom: 40px;
   }
-  main .container{
-    width: 80%;
-    padding-top: 30px;
-    padding-bottom: 30px;
-  }
-}/*# sourceMappingURL=sign-up.css.map */
+}
+/*# sourceMappingURL=sign-up.css.map */
