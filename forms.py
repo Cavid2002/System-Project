@@ -33,8 +33,7 @@ class UploadMediaForm(FlaskForm):
 class PasswordRecoverForm(FlaskForm):
     email = EmailField(validators=[DataRequired()])
 
-class like(FlaskForm):
-    lile = Sub
+
 
 class NewPasswordForm(FlaskForm):
     password = PasswordField(validators=[DataRequired(),Length(min=8)])

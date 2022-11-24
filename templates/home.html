@@ -49,7 +49,7 @@
                 <!-- <a href="./login.html" class="logout">Log Out</a> -->
                 <div class="profileDropdown" onclick="dropdownOpen()">
                     <div class="profile">
-                        <img src="{{url_for('static',filename='uploads/'+ user_info.folder + '/' + user_info.profile)}}" alt="" width="100%">
+                        <img src="{{url_for('static',filename='uploads/'+ user_info.profile)}}" alt="" width="100%">
                     </div>
                     <i class="icon-white"><span id="dropdownIcon" class="material-icons">arrow_drop_down</span></i>
                 </div>
@@ -67,7 +67,7 @@
         <div class="main-left">
             <div class="profile">
                 <div class="profile-img">
-                    <img src="{{url_for('static',filename='uploads/'+ user_info.folder + '/' + user_info.profile)}}" alt="" width="100%">
+                    <img src="{{url_for('static',filename='uploads/' + user_info.profile)}}" alt="" width="100%">
                 </div>
                 <h4>{{user_info.username}}</h4>
                 <div class="hr"></div>
@@ -95,10 +95,11 @@
         <div class="main-middle">
             <div class="posts">
                 {% for img in images %}
+                {% set bid = img.id|string()%}
                 <div class="post">
                     <div class="post-top">
                         <div class="post-top-photo">
-                            <img src="{{url_for('static',filename='uploads/'+ user_info.folder + '/' + user_info.profile)}}" alt="" width="100%">
+                            <img src="{{url_for('static',filename='uploads/'+ user_info.profile)}}" alt="" width="100%">
                         </div>
                         <p>{{user_info.username}}</p>
                     </div>
@@ -107,24 +108,31 @@
                         {%set fimg = img.media_path.split(".") %}
                         {% if fimg[1] == "mov" or fimg[1] == "mp4"%}
                             <video width="100%" controls>
-                                <source src="{{url_for('static',filename = 'uploads/' + user_info.folder + '/' + img.media_path)}}">
+                                <source src="{{url_for('static',filename = 'uploads/'+ img.media_path)}}">
                                 Your browser does not support the video tag.
                             </video>
                         {%else%}
-                            <img src="{{url_for('static',filename = 'uploads/' + user_info.folder + '/' + img.media_path)}}" alt="" width="100%">
+                            <img src="{{url_for('static',filename = 'uploads/' + img.media_path)}}" alt="" width="100%">
                         {% endif %}
                     </div>
                     <div class="post-icons">
+                        
                         <div class="post-icons-left">
+                            <a href="{{url_for('like',id = f_obj.encrypt(bid.encode('utf-8')))}}">
                             <i class="fa-regular fa-heart like-icon"></i>
-                            <a href="{{url_for('comment_section',media_path=img.media_path,folder=user_info.folder)}}" class="comment-section"><i class="fa-regular fa-comment comment-icon"></i></a>
+                            </a>
+                             <a href="{{url_for('comment_section',id = f_obj.encrypt(bid.encode('utf-8')))}}"><i class="fa-regular fa-comment comment-icon"></i></a>
+                            
                         </div>
                         <div class="post-icons right">
+                            
                             <i class="fa-regular fa-bookmark bookmark-icon like-icon"></i>
+                            
                         </div>
                     </div>
                     <div class="post-likes">
-                        <p>Liked by <span>1</span> users</p>
+
+                        <p>Liked by <span>{{img.like | count}}</span> users</p>
                     </div>
                     <div class="hr-middle"></div>
                     <div class="post-caption">
@@ -150,6 +158,11 @@
                 </div>
 
             </form>
+            {%for cat,msg in get_flashed_messages(True)%}
+                <div class="{{cat}}">
+                    <span>{{msg}}</span>
+                </div>
+            {% endfor %}
             <div class="advertisements">
                
             </div>

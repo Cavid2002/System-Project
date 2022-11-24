@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_required,login_user,logout_user
 from werkzeug.utils import secure_filename
 from flask_mail import Message
-from app import app,login_manger,mail,media,profile_img
+from app import app,login_manger,mail,media,profile_img,f_obj
 from flask_uploads import UploadNotAllowed
 from uuid import uuid4
 from datetime import timedelta,datetime
@@ -113,16 +113,14 @@ def home():
     if(upload_form.validate_on_submit() and upload_form.file.data):
         try:
             filename = media.save(storage=upload_form.file.data,folder=current_user.folder,name=generate_string()+".")
-            print(filename)
-            file = filename.split("/")
-            new_file = Media(media_path=file[1],time_added=datetime.utcnow(),user_id=current_user.id)
+            new_file = Media(media_path=filename,time_added=datetime.utcnow(),user_id=current_user.id)
             new_file.save()
             return redirect(url_for('home'))
         except UploadNotAllowed:
             flash("make sure to upload image or video file!","error-message")
                 
     allmedia = current_user.media
-    res = make_response(render_template('home.html',form = upload_form,user_info=current_user,images=allmedia,search_form = search_form))
+    res = make_response(render_template('home.html',form = upload_form,user_info=current_user,images=allmedia,search_form = search_form,f_obj = f_obj))
     return res
 
 
@@ -139,8 +137,8 @@ def searched_user_home(username):
         if(us):
             return redirect(url_for('searched_user_home',username = us.username))
         else:
-            flash("User with given name doesn't exists!")
-    res = make_response(render_template('user-home.html',images = allmedia,search_form = search_form,user_info = user))
+            flash("User with given name doesn't exists!","error-message")
+    res = make_response(render_template('user-home.html',images = allmedia,f_obj = f_obj,search_form = search_form,user_info = user))
     return res
     
 
@@ -152,23 +150,20 @@ def profile():
     if(upload_form.validate_on_submit()):
         if(upload_form.profile.data):
             if(current_user.profile != "user-icon.jpg"):
-                remove("static/uploads/"+current_user.folder + "/" + current_user.profile)
+                remove("static/uploads/" + current_user.profile)
             pfilename = profile_img.save(storage=upload_form.profile.data,folder=current_user.folder,name=generate_string()+".")
-            pfile = pfilename.split("/")
-            current_user.profile = pfile[1]
+            current_user.profile = pfilename
             current_user.save()
         if(upload_form.file.data):
             try:
                 filename = media.save(storage=upload_form.file.data,folder=current_user.folder,name=generate_string()+".")
-                print(filename)
-                file = filename.split("/")
-                new_file = Media(media_path=file[1],time_added=datetime.utcnow(),user_id=current_user.id)
+                new_file = Media(media_path=filename,time_added=datetime.utcnow(),user_id=current_user.id)
                 new_file.save()
             except UploadNotAllowed:
                 flash("Make sure to upload image or video file!","error-message")
         return redirect(url_for('profile'))
     allmedia = current_user.media
-    res = make_response(render_template('profile.html',user_info=current_user,images=allmedia,form=upload_form))
+    res = make_response(render_template('profile.html',user_info=current_user,images=allmedia,form=upload_form,f_obj = f_obj))
     return res
 
 
@@ -179,28 +174,28 @@ def searched_user_profile(username):
     if(not user):
         abort(404)
     allmedia = user.media
-    res = make_response(render_template("user-profile.html",user_info = user,images=allmedia))
+    res = make_response(render_template("user-profile.html",user_info = user,f_obj = f_obj,images=allmedia))
     return res
 
 
-@app.route('/comment/<folder>/<media_path>',methods=['POST','GET'])
+@app.route('/comment/<id>',methods=['POST','GET'])
 @login_required
-def comment_section(folder,media_path):
+def comment_section(id):
+    m_id = f_obj.decrypt(id.encode('utf-8')).decode('utf8')
     cform = CommentForm()
-    media = Media.query.filter_by(media_path = media_path).first()
+    media = Media.query.filter_by(id = m_id).first()
     if(not media):
         abort(404)
     if(cform.validate_on_submit()):
         new_comment = Comments(comment=cform.comment.data,
                               media_id = media.id,  
                               user_name=current_user.username,
-                              user_profile = current_user.folder+'/'+current_user.profile,
+                              user_profile = current_user.profile,
                               time_added = datetime.utcnow())
         new_comment.save()
-        return redirect(url_for('comment_section',folder = folder,media_path = media_path))
+        return redirect(url_for('comment_section',id = id))
     allcomments = media.comments
-    res = make_response(render_template('comment.html',form=cform,folder = folder,
-        media_path=media_path,comments = allcomments))
+    res = make_response(render_template('comment.html',form=cform,id = id,media_path = media.media_path,comments = allcomments))
     return res
 
 
@@ -257,19 +252,34 @@ def recoverpass():
     return res
 
 
-@app.route('/like/<post_path>/')
+@app.route('/like/<id>/',methods=['GET','POST'])
 @login_required
-def like(post_path):
-    media = Media.query.filter_by(media_path = post_path).first()
-    like = Likes.query.filter_by(user_id = current_user_id,media_id = media.id)
+def like(id):
+    n_id = f_obj.decrypt(id.encode('utf-8')).decode('utf8')
+    like = Likes.query.filter_by(user_id = current_user.id,media_id = n_id).first()
 
     if(like):
         db.session.delete(like)
         db.session.commit()
     else:
-        like = Likes(user_id = current_user_id,media_id = media.id)
+        like = Likes(user_id = current_user.id,media_id = n_id)
         like.save()
     return redirect(url_for('home'))
+
+
+@app.route('/like/<username>/<id>/',methods=['GET','POST'])
+@login_required
+def user_like(id,username):
+    n_id = f_obj.decrypt(id.encode('utf-8')).decode('utf8')
+    like = Likes.query.filter_by(user_id = current_user.id,media_id = n_id).first()
+
+    if(like):
+        db.session.delete(like)
+        db.session.commit()
+    else:
+        like = Likes(user_id = current_user.id,media_id = n_id)
+        like.save()
+    return redirect(url_for('searched_user_home',username = username))
 
 @app.route("/recoverinfo/<tk>")
 def recoverCheck(tk):

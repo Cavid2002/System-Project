@@ -37,7 +37,7 @@
                 <!-- <a href="./login.html" class="logout">Log Out</a> -->
                 <div class="profileDropdown" onclick="dropdownOpen()">
                     <div class="profile">
-                        <img src="{{url_for('static',filename='uploads/'+user_info.folder+'/'+user_info.profile)}}" alt="photo" width="100%" height="100%">
+                        <img src="{{url_for('static',filename='uploads/'+user_info.profile)}}" alt="photo" width="100%" height="100%">
                     </div>
                     <i class="icon-white"><span id="dropdownIcon" class="material-icons">arrow_drop_down</span></i>
                 </div>
@@ -55,7 +55,7 @@
         <div class="container">
             <div class="profile-top d-flex">
                 <div class="profile-photo">
-                    <img src="{{url_for('static',filename='uploads/'+user_info.folder+'/'+user_info.profile)}}" alt="photo" width="100%" height="100%">
+                    <img src="{{url_for('static',filename='uploads/'+user_info.profile)}}" alt="photo" width="100%" height="100%">
                 </div>
                 <div class="profile-content">
                     <p>{{user_info.username}}</p>
@@ -64,12 +64,13 @@
             </div>
             <div class="profile-bottom">
                 {% for img in images%}
+                    {% set bid = img.id|string()%}
                     {% set fimg = img.media_path.split(".")%}
                     {% if fimg[1] == "mp4" or fimg[1] == "mov" %}
                         <div class="profile-images">
-                            <a href="{{url_for('comment_section',folder=user_info.folder,media_path=img.media_path)}}">
+                            <a href="{{url_for('comment_section',id = f_obj.encrypt(bid.encode('utf-8')))}}">
                             <video width="100%" height="100%" >
-                                <source src="{{url_for('static',filename = 'uploads/' + user_info.folder + '/' + img.media_path)}}">
+                                <source src="{{url_for('static',filename = 'uploads/' + img.media_path)}}">
                                 Your browser does not support the video tag.
                             </video>
                             <i class="fa-regular fa-comment comment-icon"></i>
@@ -77,8 +78,8 @@
                         </div>
                     {% else%}
                         <div class="profile-images">
-                            <a href="{{url_for('comment_section',folder=user_info.folder,media_path=img.media_path)}}">
-                                <img src="{{url_for('static',filename='uploads/' + user_info.folder+ '/' + img.media_path)}}" alt="photo" width="100%" height="100%">
+                            <a href="{{url_for('comment_section',id = f_obj.encrypt(bid.encode('utf-8')))}}">
+                                <img src="{{url_for('static',filename='uploads/' + img.media_path)}}" alt="photo" width="100%" height="100%">
                                 <i class="fa-regular fa-comment comment-icon"></i>
                             </a>
                         </div>

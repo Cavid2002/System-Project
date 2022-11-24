@@ -360,6 +360,23 @@ main .main-right .advertisements img {
   display: none;
 }
 
+.error-message{
+    width: 100%;
+    height: 25px;
+    color: red;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.info-message{
+    width: 100%;
+    height: 25px;
+    color: #55BB37;
+    text-align: center;
+    margin-top: 15px;
+}
+
+
 @media (max-width: 576px) {
   nav ul li {
     font-size: 14px;

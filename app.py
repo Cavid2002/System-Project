@@ -8,6 +8,9 @@ from cryptography.fernet import Fernet
 import os
 
 
+key = os.environ.get('CRYPTO_KEY').encode('utf-8')
+f_obj = Fernet(key)
+
 
 def create_app():
     app = Flask(__name__)
@@ -60,4 +63,8 @@ configure_uploads(app, profile_img)
 from controls import *
 
 if(__name__ == "__main__"):
-    app.run(host="0.0.0.0")
+    app.run()
+
+
+
+
