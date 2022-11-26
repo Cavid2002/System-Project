@@ -25,7 +25,8 @@ def generate_string(size: int = 15) -> str:
 def clear_session():
     if('searchedUser' in session):
         session.pop('searchedUser')
-
+    if('user-data' in session):
+        session.pop('user-data')
     if('email' in session and 'token' in session):
         session.pop('email')
         session.pop('token')        
@@ -59,17 +60,42 @@ def sign_up():
         elif(User.query.filter_by(email=sform.email.data).first()):
             flash("Account with given E-mail already exists!","error-message")
         else:
-            user = User(username = sform.username.data,
-                        email = sform.email.data,
-                        password = generate_password_hash(sform.password.data),
-                        folder = generate_string(),
-                        profile = 'user-icon.jpg',
-                        birthdate = sform.birthdate.data)
-            user.save()
-            flash("Account was successfully created!","info-message")
-            return redirect(url_for('log_in'))
+            token = urandom(20).hex()
+            session['token'] = token
+            em = sform.email.data
+            msg = Message(f"Email Recovery:",recipients=[em])
+            msg.body = f"""Account creation token is:{url_for('verify',tk = token, _external = True)} -> 
+                        Do not share with anyone!\n if it wasn't you ignore this message"""
+            mail.send(msg)
+            session["user-data"]={
+                "email" : em,
+                "password": generate_password_hash(sform.password.data),
+                "username": sform.username.data,
+                "birthdate": sform.birthdate.data,
+                "folder": generate_string(),
+                "profile":'user-icon.jpg',
+            }
+            print()
+            flash("check your email for further instructions")
     res = make_response(render_template("sign-up.html",form=sform))
     return res
+
+
+@app.route('/account-verification/<tk>',methods = ['POST','GET'])
+def verify(tk):
+    if('token' in session and tk == session['token']):
+        session.pop('token')
+        user = User(username = session['user-data']['username'],
+                    email = session['user-data']['email'],
+                    password = session['user-data']['password'],
+                    folder = session['user-data']['folder'],
+                    profile = session['user-data']['profile'],
+                    birthdate = datetime.strptime(session['user-data']['birthdate'],"%a, %d %b %Y %H:%M:%S GMT"))
+        user.save()
+        session.pop('user-data')
+        flash("Account was successfully created!","info-message")
+        return redirect(url_for('log_in'))
+    return "[ERROR]Account wasn't created"
 
 
 
