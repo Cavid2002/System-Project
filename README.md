@@ -1,2 +1,2 @@
 # System-Project
-Project for System programming in BEU 
+Project for System design in BEU 
